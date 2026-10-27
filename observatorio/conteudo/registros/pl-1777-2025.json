@@ -1,0 +1,283 @@
+{
+  "schema_version": "ndq-dossier-0.2",
+  "dossier_id": "ndq:camara:proposicao:2498778",
+  "slug": "pl-1777-2025",
+  "kind": "legislative_proposal",
+  "institution": "Câmara dos Deputados",
+  "scope": {
+    "sphere": "federal",
+    "uf": null
+  },
+  "created_at": null,
+  "last_observed_at": "2026-10-27",
+  "publication_status": "private_preview_only",
+  "presentation": {
+    "group": "legislacao",
+    "type": "Projeto de lei",
+    "eyebrow": "PL 1777/2025 · Câmara dos Deputados",
+    "title": "Proposta prevê selos sobre ausência de glúten e lactose na frente das embalagens",
+    "description": "Projeto propõe selos informativos em embalagens de alimentos industrializados. Está aguardando parecer na tramitação consultada.",
+    "status": "Aguardando parecer",
+    "relevance": "Informação no rótulo e escolhas alimentares seguras",
+    "sort": 1
+  },
+  "theme": [
+    "rotulagem",
+    "glúten",
+    "lactose"
+  ],
+  "official_identities": [
+    {
+      "institution": "camara",
+      "namespace": "proposicoes",
+      "value": "2498778",
+      "display_ref": "PL 1777/2025",
+      "reference_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778",
+      "verified_at": "2026-10-27",
+      "source_ids": [
+        "camara-proposicao"
+      ]
+    }
+  ],
+  "source_references": [
+    {
+      "source_id": "camara-proposicao",
+      "label": "Registro da proposição",
+      "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778",
+      "source_type": "institutional_json",
+      "locator": null,
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    },
+    {
+      "source_id": "camara-autores",
+      "label": "Autoria da proposição",
+      "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/autores",
+      "source_type": "institutional_json",
+      "locator": null,
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    },
+    {
+      "source_id": "camara-tramitacoes",
+      "label": "Tramitações oficiais",
+      "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+      "source_type": "institutional_json",
+      "locator": null,
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    },
+    {
+      "source_id": "camara-historico",
+      "label": "Histórico no portal da Câmara",
+      "url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+      "source_type": "institutional_html",
+      "locator": null,
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "camara-ementa",
+      "predicate": "official_summary",
+      "value": "Dispõe sobre a obrigatoriedade da inclusão de selos informativos sobre a ausência de glúten e lactose na parte frontal das embalagens de alimentos industrializados.",
+      "source_ids": [
+        "camara-proposicao"
+      ],
+      "source_locator": "ementa",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    },
+    {
+      "fact_id": "camara-apresentacao",
+      "predicate": "presented_at",
+      "value": "2025-04-22T15:50",
+      "source_ids": [
+        "camara-proposicao"
+      ],
+      "source_locator": "dataApresentacao",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "camara-tramitacao-local:361d895144e92286af06473c432623da40d38d6c5b74c1f4850f423184e4cbcd",
+      "event_id_kind": "local_fingerprint_not_official",
+      "event_type": "Apresentação de Proposição",
+      "description": "Apresentação do projeto de lei pelo deputado Beto Richa.",
+      "occurred_at": "2025-04-22T15:50",
+      "occurrence_timezone_status": "not_provided_by_source",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-tramitacoes",
+        "camara-historico"
+      ],
+      "official_sequence": 1,
+      "agency_code": "MESA"
+    },
+    {
+      "event_id": "camara-tramitacao-local:a9544c89e0a8efa2054ebe0d7206d00c3f63eef54e1e7732fb527607fb6ea1c6",
+      "event_id_kind": "local_fingerprint_not_official",
+      "event_type": "Distribuição",
+      "description": "Distribuição às comissões de Defesa do Consumidor, Saúde e Constituição e Justiça e de Cidadania.",
+      "occurred_at": "2025-05-27T12:21",
+      "occurrence_timezone_status": "not_provided_by_source",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-tramitacoes",
+        "camara-historico"
+      ],
+      "official_sequence": 7,
+      "agency_code": "MESA"
+    },
+    {
+      "event_id": "camara-tramitacao-local:7350b9a8172c15022c63a229a1b5b8d6044eb680aaab170f151b648e84cc3c54",
+      "event_id_kind": "local_fingerprint_not_official",
+      "event_type": "Publicação de Proposição",
+      "description": "Encaminhamento à publicação inicial.",
+      "occurred_at": "2025-05-28T00:00",
+      "occurrence_timezone_status": "not_provided_by_source",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-tramitacoes",
+        "camara-historico"
+      ],
+      "official_sequence": 13,
+      "agency_code": "CCP"
+    },
+    {
+      "event_id": "camara-tramitacao-local:1149e2973574a39572741a8660e895f84417592369199863778dc5ee531a266b",
+      "event_id_kind": "local_fingerprint_not_official",
+      "event_type": "Recebimento",
+      "description": "Recebimento na Comissão de Defesa do Consumidor.",
+      "occurred_at": "2025-05-28T20:56",
+      "occurrence_timezone_status": "not_provided_by_source",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-tramitacoes",
+        "camara-historico"
+      ],
+      "official_sequence": 14,
+      "agency_code": "CDC"
+    },
+    {
+      "event_id": "camara-tramitacao-local:6b9a4254c0ccb6701c5e02df208bb6056764b6f3095b242fffee3356e7677929",
+      "event_id_kind": "local_fingerprint_not_official",
+      "event_type": "Designação de Relator(a)",
+      "description": "Designação do deputado Felipe Carreras (PSB-PE) como relator na CDC.",
+      "occurred_at": "2025-09-03T15:40",
+      "occurrence_timezone_status": "not_provided_by_source",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-tramitacoes",
+        "camara-historico"
+      ],
+      "official_sequence": 15,
+      "agency_code": "CDC"
+    },
+    {
+      "event_id": "camara-tramitacao-local:b29e30cf7c27c36a7ecff47610002579582b4453e1a9dbe46bfe25516919bdf3",
+      "event_id_kind": "local_fingerprint_not_official",
+      "event_type": "Abertura de Prazo",
+      "description": "Abertura do prazo de emendas.",
+      "occurred_at": "2025-09-04T00:00",
+      "occurrence_timezone_status": "not_provided_by_source",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-tramitacoes",
+        "camara-historico"
+      ],
+      "official_sequence": 16,
+      "agency_code": "CDC"
+    },
+    {
+      "event_id": "camara-tramitacao-local:b55c479d3c4f6775f04a13f7c1ddad4716228495850c01c317103811b4ac72e6",
+      "event_id_kind": "local_fingerprint_not_official",
+      "event_type": "Encerramento de Prazo",
+      "description": "Encerramento do prazo de emendas, sem apresentação de emendas conforme página da Câmara.",
+      "occurred_at": "2025-09-18T12:59",
+      "occurrence_timezone_status": "not_provided_by_source",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-tramitacoes",
+        "camara-historico"
+      ],
+      "official_sequence": 17,
+      "agency_code": "CDC"
+    }
+  ],
+  "official_status_observations": [
+    {
+      "status_text": "Aguardando Parecer",
+      "institution": "Câmara dos Deputados",
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "camara-proposicao"
+      ],
+      "stage_is_not_legal_effect": true
+    }
+  ],
+  "actor_roles": [
+    {
+      "actor_name": "Beto Richa",
+      "role_type": "author",
+      "role_date": null,
+      "affiliation_at_date": null,
+      "source_ids": [
+        "camara-autores"
+      ]
+    },
+    {
+      "actor_name": "Felipe Carreras",
+      "role_type": "designated_rapporteur",
+      "role_date": "2025-09-03",
+      "affiliation_at_date": null,
+      "source_ids": [
+        "camara-tramitacoes"
+      ]
+    }
+  ],
+  "dossier_relations": [],
+  "deadlines": [],
+  "coverage_evidence": [],
+  "change_history": [],
+  "quality_states": {
+    "transport_status": "evidence_from_prior_lab_only",
+    "parse_status": "evidence_from_prior_lab_only",
+    "identity_status": "previously_documented",
+    "coverage_status": "not_homologated",
+    "fact_verification_status": "mixed_previous_lab_and_editorial_review",
+    "editorial_status": "approved_only_for_private_prototype"
+  },
+  "editorial_assessment": {
+    "relevance": "direct_or_topic_relevance_described_in_presentation",
+    "basis_fact_ids": [
+      "camara-ementa"
+    ],
+    "suggested_by": "NDQ_editorial_prototype",
+    "reviewer": null,
+    "review_status": "prototype_approved_for_private_integration",
+    "impact_claims": []
+  },
+  "provenance_note": "Converted from approved v0.1 fixtures and prior validation records on 27/10/2026; this conversion is not a new official-source collection.",
+  "type_data": {
+    "legislative_reference": "PL 1777/2025",
+    "stage_not_enactment": true,
+    "law_in_force": "NOT_VERIFIED_AND_NOT_CLAIMED"
+  }
+}

@@ -5,6 +5,7 @@ from urllib.parse import urlsplit, unquote
 from html.parser import HTMLParser
 from collections import Counter
 import json
+from validate_dossiers import validate_directory
 ROOT=Path(__file__).resolve().parents[1]
 class Walker(HTMLParser):
     def __init__(self):
@@ -41,8 +42,10 @@ for f in fixtures:
     d=json.loads(f.read_text('utf8'))
     if not d.get('source','').startswith('https://'):issues.append(f'{f}: source not HTTPS')
     if d.get('publication_status')!='private_preview_only':issues.append(f'{f}: wrong publication status')
-print(f'Checked {len(htmls)} HTML pages and {len(fixtures)} dossier fixtures.')
+records, semantic_issues = validate_directory()
+issues.extend(semantic_issues)
+print(f'Checked {len(htmls)} HTML pages, {len(fixtures)} legacy fixtures and {len(records)} structured dossiers.')
 if issues:
     for issue in issues:print('FAIL',issue)
     raise SystemExit(1)
-print('PASS: local links, IDs, assets, source schemes and draft status')
+print('PASS: local links, IDs, assets, source schemes, structured evidence and private status')

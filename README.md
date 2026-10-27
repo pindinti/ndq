@@ -72,3 +72,16 @@ O dossiê Fundepar distingue edital e retificação documentados de execução/e
 - [x] Sem publicação/integração de produção
 - [ ] Revisão de conteúdo antes de publicação pública
 - [ ] Modelo plenamente normalizado e conexão com fontes oficiais
+
+## v0.2 — Camada de dados estruturados (MVP privado)
+
+Aprovada a interface visual v0.1, adicionamos `observatorio/conteudo/registros/*.json` com identidades oficiais, referências, fatos e eventos. O `build_site.py` usa os metadados desses registros para gerar **os mesmos cards HTML** da v0.1, enquanto o corpo editorial completo permanece nos fixtures aprovados de `observatorio/conteudo/dossies/`. O validador impede divergências entre os dois formatos.
+
+```powershell
+py -3 tools/validate_dossiers.py
+py -3 tools/test_dossiers.py
+py -3 tools/build_site.py
+py -3 tools/check_site.py
+```
+
+Leia `IMPLEMENTACAO_MVP_v0.2.md` para contrato, limites de validade dos dados e próximo gate de migração. Sem coleta ao vivo, publicação automática ou banco de dados nesta versão.

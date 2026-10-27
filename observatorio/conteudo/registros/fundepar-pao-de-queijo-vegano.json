@@ -1,0 +1,267 @@
+{
+  "schema_version": "ndq-dossier-0.2",
+  "dossier_id": "ndq:pncp:22112109000153:2026:82",
+  "slug": "fundepar-pao-de-queijo-vegano",
+  "kind": "public_procurement",
+  "institution": "Fundepar",
+  "scope": {
+    "sphere": "estadual",
+    "uf": "PR"
+  },
+  "created_at": null,
+  "last_observed_at": "2026-10-27",
+  "publication_status": "private_preview_only",
+  "presentation": {
+    "group": "compras",
+    "type": "Compra pública",
+    "eyebrow": "Fundepar · Pregão SRP nº 669/2026 · Paraná",
+    "title": "Fundepar prevê pão de queijo vegano e refeições sem glúten e lactose em edital para escolas do Paraná",
+    "description": "O aviso prevê registro de preços para futura aquisição de alimentos especializados. Uma retificação oficial alterou o valor máximo.",
+    "status": "Aviso e retificação documentados",
+    "relevance": "Alimentação escolar com opções veganas e dietas específicas",
+    "sort": 3
+  },
+  "theme": [
+    "alimentação escolar",
+    "pão de queijo vegano",
+    "compras públicas"
+  ],
+  "official_identities": [
+    {
+      "institution": "pncp",
+      "namespace": "contratacao",
+      "value": "22112109000153-1-000082/2026",
+      "display_ref": "PNCP · 22112109000153-1-000082/2026",
+      "reference_url": "https://pncp.gov.br/app/editais/22112109000153/2026/82",
+      "verified_at": "2026-10-27",
+      "source_ids": [
+        "pncp-registro"
+      ]
+    },
+    {
+      "institution": "fundepar",
+      "namespace": "pregao_srp",
+      "value": "669/2026",
+      "display_ref": "Pregão SRP nº 669/2026",
+      "reference_url": "https://www.fundepar.pr.gov.br/sites/fundepar/arquivos_restritos/files/documento/2026-05/pe_srp_669_2026_aquisicao_generos_alimenticios_refeicoes_congeladas.pdf",
+      "verified_at": "2026-10-27",
+      "source_ids": [
+        "fundepar-aviso-original"
+      ]
+    }
+  ],
+  "source_references": [
+    {
+      "source_id": "pncp-registro",
+      "label": "Registro PNCP",
+      "url": "https://pncp.gov.br/app/editais/22112109000153/2026/82",
+      "source_type": "institutional_html",
+      "locator": null,
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    },
+    {
+      "source_id": "fundepar-aviso-original",
+      "label": "Aviso original do edital",
+      "url": "https://www.fundepar.pr.gov.br/sites/fundepar/arquivos_restritos/files/documento/2026-05/pe_srp_669_2026_aquisicao_generos_alimenticios_refeicoes_congeladas.pdf",
+      "source_type": "official_pdf",
+      "locator": "20/05/2026",
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    },
+    {
+      "source_id": "fundepar-aviso-retificado",
+      "label": "Retificação oficial",
+      "url": "https://www.fundepar.pr.gov.br/sites/fundepar/arquivos_restritos/files/documento/2026-05/pe_srp_669_2026_aquisicao_refeicoes_congeladas.pdf",
+      "source_type": "official_pdf",
+      "locator": "22/05/2026",
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    },
+    {
+      "source_id": "seeduc-pr-comunicado",
+      "label": "Comunicado institucional do Paraná",
+      "url": "https://www.educacao.pr.gov.br/Noticia/Estado-lanca-edital-de-R-88-milhoes-para-alimentacao-escolar-inclusiva-e-especializada",
+      "source_type": "institutional_html",
+      "locator": "27/05/2026",
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "fundepar-objeto",
+      "predicate": "procurement_object",
+      "value": "Registro de preços para futura e eventual aquisição de refeições e produtos congelados para alimentação escolar no Paraná",
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "source_locator": "objeto do pregão",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    },
+    {
+      "fact_id": "fundepar-produto",
+      "predicate": "food_product_mentioned",
+      "value": "Pão de queijo vegano congelado",
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "source_locator": "itens descritos no aviso",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    },
+    {
+      "fact_id": "fundepar-alternativas",
+      "predicate": "dietary_alternatives_mentioned",
+      "value": [
+        "vegana",
+        "sem glúten",
+        "sem lactose"
+      ],
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "source_locator": "objeto/descrição do aviso",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    },
+    {
+      "fact_id": "fundepar-original-valor-centavos",
+      "predicate": "maximum_estimated_value_brl_cents",
+      "value": 885839000,
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "source_locator": "valor máximo original",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    },
+    {
+      "fact_id": "fundepar-retificado-valor-centavos",
+      "predicate": "maximum_estimated_value_brl_cents",
+      "value": 885775000,
+      "source_ids": [
+        "fundepar-aviso-retificado"
+      ],
+      "source_locator": "valor máximo retificado",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "fundepar:aviso:2026-05-20",
+      "event_id_kind": "local_compound_from_official_date",
+      "event_type": "notice_original",
+      "description": "Aviso original de licitação, com valor máximo previsto.",
+      "occurred_at": "2026-05-20",
+      "occurrence_timezone_status": "date_only",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "official_sequence": null,
+      "agency_code": "Fundepar"
+    },
+    {
+      "event_id": "fundepar:retificacao:2026-05-22",
+      "event_id_kind": "local_compound_from_official_date",
+      "event_type": "notice_rectification",
+      "description": "Retificação do valor máximo previsto, sem inferência de mudança nos itens.",
+      "occurred_at": "2026-05-22",
+      "occurrence_timezone_status": "date_only",
+      "published_at": null,
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "fundepar-aviso-retificado"
+      ],
+      "official_sequence": null,
+      "agency_code": "Fundepar"
+    }
+  ],
+  "official_status_observations": [],
+  "actor_roles": [],
+  "dossier_relations": [],
+  "deadlines": [],
+  "coverage_evidence": [],
+  "change_history": [
+    {
+      "change_id": "fundepar:valor-maximo:retificacao-2026-05-22",
+      "attribute_path": "type_data.notice_versions.maximum_value_brl_cents",
+      "previous_observed_value": 885839000,
+      "new_observed_value": 885775000,
+      "delta_brl_cents": -64000,
+      "detected_at": "2026-10-27",
+      "basis_source_ids": [
+        "fundepar-aviso-original",
+        "fundepar-aviso-retificado"
+      ],
+      "change_classification": "documented_notice_rectification",
+      "review_status": "documented_in_prior_editorial_review",
+      "does_not_establish_contract_or_delivery": true
+    }
+  ],
+  "quality_states": {
+    "transport_status": "evidence_from_prior_lab_only",
+    "parse_status": "evidence_from_prior_lab_only",
+    "identity_status": "previously_documented",
+    "coverage_status": "not_homologated",
+    "fact_verification_status": "mixed_previous_lab_and_editorial_review",
+    "editorial_status": "approved_only_for_private_prototype"
+  },
+  "editorial_assessment": {
+    "relevance": "direct_or_topic_relevance_described_in_presentation",
+    "basis_fact_ids": [
+      "fundepar-produto",
+      "fundepar-alternativas"
+    ],
+    "suggested_by": "NDQ_editorial_prototype",
+    "reviewer": null,
+    "review_status": "prototype_approved_for_private_integration",
+    "impact_claims": []
+  },
+  "provenance_note": "Converted from approved v0.1 fixtures and prior validation records on 27/10/2026; this conversion is not a new official-source collection.",
+  "type_data": {
+    "procurement_object": "Registro de preços para futura e eventual aquisição de refeições e produtos congelados para alimentação escolar no Paraná",
+    "notice_versions": [
+      {
+        "notice_type": "original",
+        "document_date": "2026-05-20",
+        "maximum_value_brl_cents": 885839000,
+        "source_ids": [
+          "fundepar-aviso-original"
+        ]
+      },
+      {
+        "notice_type": "rectification",
+        "document_date": "2026-05-22",
+        "maximum_value_brl_cents": 885775000,
+        "source_ids": [
+          "fundepar-aviso-retificado"
+        ]
+      }
+    ],
+    "item_requirements": [
+      {
+        "description": "Pão de queijo vegano congelado",
+        "source_ids": [
+          "fundepar-aviso-original"
+        ]
+      }
+    ],
+    "procurement_lifecycle_events": [],
+    "contract_signed": "NOT_VERIFIED",
+    "goods_delivered": "NOT_VERIFIED"
+  }
+}

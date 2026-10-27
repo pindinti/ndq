@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Rebuild the private NDQ MVP static pages from editorial fixture JSONs.
-Uses Python standard library only; publish only after human review of generated files.
-Rich HTML blocks in JSON are trusted editorial fragments from approved prototypes,
-NOT arbitrary user input and NOT a complete normalized data contract.
+"""Rebuild private NDQ MVP pages from normalized metadata and legacy approved HTML.
+
+The v0.2 normalized records drive index-card fields; v0.1 editorial fragments
+are preserved as approved visual content pending a later semantic migration.
+Never ingest external content into HTML fragments or publish automatically.
 """
 from pathlib import Path
 import json, html
+from datetime import date
+from validate_dossiers import validate_directory
 ROOT=Path(__file__).resolve().parents[1]
 OB=ROOT/'observatorio'
 DATA=OB/'conteudo'/'dossies'
@@ -14,13 +17,18 @@ LABEL={'legislacao':'Projetos de lei','regulacao':'Regulação','compras':'Compr
 
 def escape(x):return html.escape(str(x),quote=True)
 
-def fixture(path):
+def fixture(path, record):
     d=json.loads(path.read_text('utf-8'))
     required=['id','group','title','description','status','source','card_html','detail_html','verified_at']
     if any(not d.get(k) for k in required):raise ValueError(f'Missing fixture field: {path}')
     if d['group'] not in LABEL:raise ValueError(f'Unknown group: {path}')
     if d['id']!=path.stem or not all(c in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in d['id']):raise ValueError(f'Invalid slug: {path}')
     if not d['source'].startswith('https://'):raise ValueError(f'Official source not HTTPS: {path}')
+    # v0.2 is authoritative for metadata; rich editorial HTML still comes from v0.1.
+    d.update(record['presentation'])
+    d['theme'] = record['theme']
+    d['verified_at'] = record['last_observed_at']
+    d['publication_status'] = record['publication_status']
     return d
 
 def detail_page(d):
@@ -55,10 +63,11 @@ def card(d):
     vals={k:escape(d[k]) for k in ['id','title','description','eyebrow','status','group','type','relevance','verified_at']}
     terms=' '.join(str(d.get(k,'')) for k in ['title','description','eyebrow','status','type','relevance'])+' '.join(d.get('theme',[]))
     url=f'dossies/{vals["id"]}/#dossie'
+    consulted=escape(date.fromisoformat(d['verified_at']).strftime('%d/%m/%Y'))
     return f'''<article class="dossier-card" data-card data-group="{vals['group']}" data-search="{escape(terms)}">
         <div class="card-top"><span class="card-group">{vals['type']}</span><span class="card-topic">{vals['relevance']}</span></div>
         <div class="card-main"><span class="card-code">{vals['eyebrow']}</span><h2>{vals['title']}</h2><p class="summary">{vals['description']}</p></div>
-        <div class="card-bottom"><span class="status-pill">{vals['status']}</span><div class="card-footer"><span class="card-date">Consulta: 27/10/2026</span><a class="card-link" href="{url}" aria-label="Abrir dossiê: {vals['title']}">Abrir dossiê <span aria-hidden="true">→</span></a></div></div>
+        <div class="card-bottom"><span class="status-pill">{vals['status']}</span><div class="card-footer"><span class="card-date">Consulta: {consulted}</span><a class="card-link" href="{url}" aria-label="Abrir dossiê: {vals['title']}">Abrir dossiê <span aria-hidden="true">→</span></a></div></div>
     </article>'''
 
 def home_page(dossiers):
@@ -91,7 +100,11 @@ def home_page(dossiers):
 </body></html>'''
 
 def main():
-    ds=sorted((fixture(path) for path in DATA.glob('*.json')),key=lambda d:d.get('sort',10))
+    records, problems = validate_directory()
+    if problems:
+        raise ValueError('Cannot build from unvalidated normalized content:\n' + '\n'.join(problems))
+    normalized = {r['slug']: r for r in records}
+    ds=sorted((fixture(path, normalized[path.stem]) for path in DATA.glob('*.json')),key=lambda d:d.get('sort',10))
     if len(ds)!=3:raise ValueError('Expected exactly three approved pilot dossiers')
     for d in ds:
         dest=OUT/d['id'];dest.mkdir(parents=True,exist_ok=True)

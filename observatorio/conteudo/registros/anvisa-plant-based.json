@@ -1,0 +1,128 @@
+{
+  "schema_version": "ndq-dossier-0.2",
+  "dossier_id": "ndq:anvisa:agenda:AR2627-3.7",
+  "slug": "anvisa-plant-based",
+  "kind": "regulatory_agenda_theme",
+  "institution": "Anvisa",
+  "scope": {
+    "sphere": "federal",
+    "uf": null
+  },
+  "created_at": null,
+  "last_observed_at": "2026-10-27",
+  "publication_status": "private_preview_only",
+  "presentation": {
+    "group": "regulacao",
+    "type": "Agenda regulatória",
+    "eyebrow": "Anvisa · AR2627-3.7 · Agenda 2026–2027",
+    "title": "Alimentos plant-based estão na agenda de regulamentação da Anvisa",
+    "description": "O tema integra a Agenda Regulatória 2026–2027, com situação registrada como “Em andamento” na planilha consultada.",
+    "status": "Em andamento na agenda",
+    "relevance": "Alternativas vegetais e escolhas alimentares éticas",
+    "sort": 2
+  },
+  "theme": [
+    "plant-based",
+    "veganismo",
+    "regulação"
+  ],
+  "official_identities": [
+    {
+      "institution": "anvisa",
+      "namespace": "agenda_regulatoria_2026_2027",
+      "value": "AR2627-3.7",
+      "display_ref": "Tema 3.7 · AR2627-3.7",
+      "reference_url": "https://www.gov.br/anvisa/pt-br/assuntos/regulamentacao/agenda-regulatoria/agenda-2026-2027/lista-final-de-temas",
+      "verified_at": "2026-10-27",
+      "source_ids": [
+        "anvisa-lista-temas",
+        "anvisa-planilha"
+      ]
+    }
+  ],
+  "source_references": [
+    {
+      "source_id": "anvisa-planilha",
+      "label": "Planilha de acompanhamento da Agenda Regulatória",
+      "url": "https://www.gov.br/anvisa/pt-br/assuntos/regulamentacao/agenda-regulatoria/agenda-2026-2027/arquivos/AcompanhamentoPropostas/planilha_acompanhapropostas_regulatorias26_27_02fev2026.xlsx/@@download/file",
+      "source_type": "institutional_xlsx",
+      "locator": "ID-unico_tema AR2627-3.7",
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    },
+    {
+      "source_id": "anvisa-lista-temas",
+      "label": "Lista final de temas 2026–2027",
+      "url": "https://www.gov.br/anvisa/pt-br/assuntos/regulamentacao/agenda-regulatoria/agenda-2026-2027/lista-final-de-temas",
+      "source_type": "institutional_html",
+      "locator": "tema 3.7",
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "anvisa-tema",
+      "predicate": "agenda_theme_title",
+      "value": "Regulamentação dos alimentos plant-based",
+      "source_ids": [
+        "anvisa-planilha",
+        "anvisa-lista-temas"
+      ],
+      "source_locator": "AR2627-3.7",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    }
+  ],
+  "events": [],
+  "official_status_observations": [
+    {
+      "status_text": "Em andamento",
+      "institution": "Anvisa",
+      "observed_at": "2026-10-27",
+      "source_ids": [
+        "anvisa-planilha"
+      ],
+      "stage_is_not_legal_effect": true
+    }
+  ],
+  "actor_roles": [],
+  "dossier_relations": [],
+  "deadlines": [],
+  "coverage_evidence": [],
+  "change_history": [],
+  "quality_states": {
+    "transport_status": "evidence_from_prior_lab_only",
+    "parse_status": "evidence_from_prior_lab_only",
+    "identity_status": "previously_documented",
+    "coverage_status": "not_homologated",
+    "fact_verification_status": "mixed_previous_lab_and_editorial_review",
+    "editorial_status": "approved_only_for_private_prototype"
+  },
+  "editorial_assessment": {
+    "relevance": "direct_or_topic_relevance_described_in_presentation",
+    "basis_fact_ids": [
+      "anvisa-tema"
+    ],
+    "suggested_by": "NDQ_editorial_prototype",
+    "reviewer": null,
+    "review_status": "prototype_approved_for_private_integration",
+    "impact_claims": []
+  },
+  "provenance_note": "Converted from approved v0.1 fixtures and prior validation records on 27/10/2026; this conversion is not a new official-source collection.",
+  "type_data": {
+    "agenda_cycle": "2026-2027",
+    "theme_id": "AR2627-3.7",
+    "macrotheme": "Alimentos",
+    "agenda_status_source": "anvisa-planilha",
+    "last_read_spreadsheet_version": "version_from_prior_lab_not_revalidated_here",
+    "proposals": [],
+    "related_act_mentions": [],
+    "normative_effect": "NOT_VERIFIED",
+    "public_consultation_open": "NOT_VERIFIED",
+    "plant_based_implies_certified_vegan": false
+  }
+}
