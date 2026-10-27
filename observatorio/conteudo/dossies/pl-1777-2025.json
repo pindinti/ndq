@@ -1,0 +1,208 @@
+{
+  "schema": "ndq-site-fixture-0.1",
+  "id": "pl-1777-2025",
+  "group": "legislacao",
+  "type": "Projeto de lei",
+  "eyebrow": "PL 1777/2025 · Câmara dos Deputados",
+  "title": "Proposta prevê selos sobre ausência de glúten e lactose na frente das embalagens",
+  "description": "Projeto propõe selos informativos em embalagens de alimentos industrializados. Está aguardando parecer na tramitação consultada.",
+  "status": "Aguardando parecer",
+  "verified_at": "2026-10-27",
+  "sort": 1,
+  "official_id": "2498778",
+  "source": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778",
+  "relevance": "Informação no rótulo e escolhas alimentares seguras",
+  "theme": [
+    "rotulagem",
+    "glúten",
+    "lactose"
+  ],
+  "editorial_status": "prototype_approved_for_private_integration",
+  "publication_status": "private_preview_only",
+  "content_origin": "Observatorio_NDQ_Prototipo_PL_1777_2025.html",
+  "card_html": "\n<div class=\"intro\"><div><div class=\"kicker\">Protótipo · visão de listagem</div><h1>Um assunto, todas as evidências em um só lugar.</h1><p>Como o PL apareceria entre os dossiês do Observatório NDQ.</p></div><div class=\"observation\">Conteúdo de referência<br/><strong>27 de outubro de 2026</strong></div></div>\n<article aria-label=\"Card do PL 1777 de 2025\" class=\"shadow-card pre-card\">\n<div class=\"pre-card-main\">\n<div>\n<div class=\"tags\"><span class=\"chip proposal\">PROJETO DE LEI</span><span class=\"chip stage\"><span class=\"dot\"></span>Aguardando parecer</span></div>\n<div class=\"kicker\" style=\"margin-bottom:10px\">PL 1777/2025 · Câmara dos Deputados</div>\n<h2>Proposta prevê selos sobre ausência de glúten e lactose na frente das embalagens</h2>\n<p class=\"lead\">O projeto busca tornar obrigatórios selos informativos na parte frontal das embalagens de alimentos industrializados. Está em análise na Comissão de Defesa do Consumidor.</p>\n</div>\n<div aria-label=\"Ilustração conceitual de informação frontal na embalagem, não um modelo oficial de selo\" class=\"topic-visual\">\n<span class=\"side-label\">Rotulagem &amp; informação</span>\n<div class=\"proposal-shape\"><em>Ilustração conceitual</em><strong>Informação visível no rótulo</strong><i></i><i></i></div>\n<small>Não representa o desenho de selo previsto no PL.</small>\n</div>\n</div>\n<div class=\"pre-meta\">\n<div class=\"fact-pair\"><span>Autor</span><strong>Beto Richa</strong></div>\n<div class=\"fact-pair\"><span>Relator designado</span><strong>Felipe Carreras</strong></div>\n<div class=\"fact-pair\"><span>Último movimento conhecido</span><strong>18/09/2025</strong></div>\n<div class=\"fact-pair\"><span>Consulta à fonte</span><strong>27/10/2026</strong></div>\n</div>\n<div class=\"pre-foot\">\n<span class=\"quiet\">Proposta em tramitação · não é lei em vigor</span>\n<button class=\"action-link\" data-view=\"detail\" type=\"button\">Abrir dossiê <span aria-hidden=\"true\">→</span></button>\n</div>\n</article>\n<p class=\"review-note\"><strong>Para discutir:</strong> o resumo explica o objeto sem prometer efeito prático, e o estado “Aguardando parecer” aparece sem sugerir atualização recente. Decidir depois se autoria e relatoria precisam aparecer já no card curto.</p>\n<p class=\"foot-explainer\">As fontes e os sete eventos ficam disponíveis na visão expandida. Esta prévia não oferece CTA de mobilização porque não há chamada editorial revisada nem prazo de participação confirmado.</p>\n",
+  "detail_html": "\n<div class=\"intro\"><div><div class=\"kicker\">Protótipo · visão expandida</div><h1>Dossiê legislativo</h1><p>Informação verificada, contextualização e limites da análise.</p></div><div class=\"observation\">Última consulta à fonte<br/><strong>27 de outubro de 2026</strong></div></div>\n<article class=\"shadow-card detail-hero\">\n<div class=\"tags\"><span class=\"chip proposal\">PROJETO DE LEI</span><span class=\"chip stage\"><span class=\"dot\"></span>Aguardando parecer</span><span class=\"chip neutral\">Não é lei vigente</span></div>\n<div class=\"kicker\" style=\"margin-bottom:10px\">PL 1777/2025 · Câmara dos Deputados</div>\n<h2>Selos para informar ausência de glúten e lactose na frente das embalagens</h2>\n<p class=\"lead\">O projeto propõe obrigar a inclusão de selos informativos na face frontal de embalagens de alimentos industrializados. A tramitação observada está na Comissão de Defesa do Consumidor, aguardando parecer.</p>\n<div class=\"facts-ribbon\">\n<div class=\"fact-pair\"><span>Autor</span><strong>Beto Richa</strong></div>\n<div class=\"fact-pair\"><span>Relator designado</span><strong>Felipe Carreras</strong></div>\n<div class=\"fact-pair\"><span>Apresentação</span><strong>22/04/2025</strong></div>\n<div class=\"fact-pair\"><span>Último registro</span><strong>18/09/2025</strong></div>\n</div>\n</article>\n<div class=\"two-col\">\n<div class=\"content-stack\">\n<section class=\"shadow-card section-card\" id=\"proposta\">\n<span class=\"kicker\">01 · Informação oficial</span>\n<h3>O que o projeto propõe?</h3>\n<p>A proposta trata de selos informativos sobre a ausência de glúten e lactose na parte frontal de embalagens de alimentos industrializados.</p>\n<blockquote class=\"official-quote\">“Dispõe sobre a obrigatoriedade da inclusão de selos informativos sobre a ausência de glúten e lactose na parte frontal das embalagens de alimentos industrializados.”</blockquote>\n<p style=\"margin-top:14px\"><small>Texto da ementa oficial, não reprodução integral do projeto. <a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778\" rel=\"noopener noreferrer\" target=\"_blank\">Consultar registro da Câmara ↗</a></small></p>\n</section>\n<section class=\"shadow-card section-card\" id=\"relevancia\">\n<span class=\"kicker\">02 · Análise preliminar</span>\n<div class=\"editorial-title\"><h3 style=\"margin:0\">Por que importa para inclusão alimentar?</h3><span class=\"chip neutral\">Interpretação em revisão</span></div>\n<p style=\"margin-top:13px\">A identificação visível de características dos alimentos é um assunto potencialmente relevante para pessoas com doença celíaca, pessoas com restrições relacionadas à lactose e para o direito à informação na escolha de produtos.</p>\n<p><strong>Isso não comprova que os selos propostos seriam tecnicamente suficientes ou eficazes.</strong> Os critérios de alegação, os riscos de indução ao erro e a relação com regras existentes ainda exigem exame do texto integral e das normas pertinentes.</p>\n<div class=\"keyword-cloud\"><span>Informação no rótulo</span><span>Doença celíaca</span><span>Restrições à lactose</span><span>Segurança de alimentos</span></div>\n<div class=\"review-note\"><strong>Para discutir:</strong> a relevância é uma hipótese editorial sustentada pelo objeto da proposta. Evitar manchetes como “PL garante segurança para celíacos” ou “empresas terão que usar selo”, pois nenhuma dessas conclusões decorre do estágio atual.</div>\n</section>\n<section class=\"shadow-card section-card\" id=\"andamento\">\n<span class=\"kicker\">03 · Histórico oficial</span>\n<h3>O caminho do projeto até aqui</h3>\n<p>Sete movimentações registradas nos dados consultados da Câmara, da apresentação ao encerramento do prazo de emendas. A sequência é reproduzida com resumos e acesso à fonte.</p>\n<ol class=\"timeline\">\n<li class=\"event-row\">\n<div class=\"event-line\"><span aria-hidden=\"true\" class=\"event-dot\"></span></div>\n<div class=\"event-content\">\n<div class=\"event-meta\"><time datetime=\"2025-04-22T15:50\">22/04/2025</time><span class=\"micro-sep\">·</span><span>MESA</span><span class=\"event-time\" title=\"Horário informado pela API, fuso não especificado\">15:50</span></div>\n<h4>Apresentação de Proposição</h4>\n<p>Apresentação do projeto de lei pelo deputado Beto Richa.</p>\n<details class=\"event-evidence\"><summary>Rastreabilidade do evento</summary><p>Sequência na API: 1. ID de controle local: <code>361d895144e92286…</code> (não é um identificador oficial).</p><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes\" rel=\"noopener noreferrer\" target=\"_blank\">Movimentações na Câmara <span aria-hidden=\"true\">↗</span></a></details>\n</div>\n</li>\n<li class=\"event-row\">\n<div class=\"event-line\"><span aria-hidden=\"true\" class=\"event-dot\"></span></div>\n<div class=\"event-content\">\n<div class=\"event-meta\"><time datetime=\"2025-05-27T12:21\">27/05/2025</time><span class=\"micro-sep\">·</span><span>MESA</span><span class=\"event-time\" title=\"Horário informado pela API, fuso não especificado\">12:21</span></div>\n<h4>Distribuição</h4>\n<p>Distribuição às comissões de Defesa do Consumidor, Saúde e Constituição e Justiça e de Cidadania.</p>\n<details class=\"event-evidence\"><summary>Rastreabilidade do evento</summary><p>Sequência na API: 7. ID de controle local: <code>a9544c89e0a8efa2…</code> (não é um identificador oficial).</p><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes\" rel=\"noopener noreferrer\" target=\"_blank\">Movimentações na Câmara <span aria-hidden=\"true\">↗</span></a></details>\n</div>\n</li>\n<li class=\"event-row\">\n<div class=\"event-line\"><span aria-hidden=\"true\" class=\"event-dot\"></span></div>\n<div class=\"event-content\">\n<div class=\"event-meta\"><time datetime=\"2025-05-28T00:00\">28/05/2025</time><span class=\"micro-sep\">·</span><span>CCP</span><span class=\"event-time\" title=\"Horário informado pela API, fuso não especificado\">00:00</span></div>\n<h4>Publicação de Proposição</h4>\n<p>Encaminhamento à publicação inicial.</p>\n<details class=\"event-evidence\"><summary>Rastreabilidade do evento</summary><p>Sequência na API: 13. ID de controle local: <code>7350b9a8172c1502…</code> (não é um identificador oficial).</p><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes\" rel=\"noopener noreferrer\" target=\"_blank\">Movimentações na Câmara <span aria-hidden=\"true\">↗</span></a></details>\n</div>\n</li>\n<li class=\"event-row\">\n<div class=\"event-line\"><span aria-hidden=\"true\" class=\"event-dot\"></span></div>\n<div class=\"event-content\">\n<div class=\"event-meta\"><time datetime=\"2025-05-28T20:56\">28/05/2025</time><span class=\"micro-sep\">·</span><span>CDC</span><span class=\"event-time\" title=\"Horário informado pela API, fuso não especificado\">20:56</span></div>\n<h4>Recebimento</h4>\n<p>Recebimento na Comissão de Defesa do Consumidor.</p>\n<details class=\"event-evidence\"><summary>Rastreabilidade do evento</summary><p>Sequência na API: 14. ID de controle local: <code>1149e2973574a395…</code> (não é um identificador oficial).</p><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes\" rel=\"noopener noreferrer\" target=\"_blank\">Movimentações na Câmara <span aria-hidden=\"true\">↗</span></a></details>\n</div>\n</li>\n<li class=\"event-row\">\n<div class=\"event-line\"><span aria-hidden=\"true\" class=\"event-dot\"></span></div>\n<div class=\"event-content\">\n<div class=\"event-meta\"><time datetime=\"2025-09-03T15:40\">03/09/2025</time><span class=\"micro-sep\">·</span><span>CDC</span><span class=\"event-time\" title=\"Horário informado pela API, fuso não especificado\">15:40</span></div>\n<h4>Designação de Relator(a)</h4>\n<p>Designação do deputado Felipe Carreras (PSB-PE) como relator na CDC.</p>\n<details class=\"event-evidence\"><summary>Rastreabilidade do evento</summary><p>Sequência na API: 15. ID de controle local: <code>6b9a4254c0ccb670…</code> (não é um identificador oficial).</p><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes\" rel=\"noopener noreferrer\" target=\"_blank\">Movimentações na Câmara <span aria-hidden=\"true\">↗</span></a></details>\n</div>\n</li>\n<li class=\"event-row\">\n<div class=\"event-line\"><span aria-hidden=\"true\" class=\"event-dot\"></span></div>\n<div class=\"event-content\">\n<div class=\"event-meta\"><time datetime=\"2025-09-04T00:00\">04/09/2025</time><span class=\"micro-sep\">·</span><span>CDC</span><span class=\"event-time\" title=\"Horário informado pela API, fuso não especificado\">00:00</span></div>\n<h4>Abertura de Prazo</h4>\n<p>Abertura do prazo de emendas.</p>\n<details class=\"event-evidence\"><summary>Rastreabilidade do evento</summary><p>Sequência na API: 16. ID de controle local: <code>b29e30cf7c27c36a…</code> (não é um identificador oficial).</p><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes\" rel=\"noopener noreferrer\" target=\"_blank\">Movimentações na Câmara <span aria-hidden=\"true\">↗</span></a></details>\n</div>\n</li>\n<li class=\"event-row\">\n<div class=\"event-line\"><span aria-hidden=\"true\" class=\"event-dot\"></span></div>\n<div class=\"event-content\">\n<div class=\"event-meta\"><time datetime=\"2025-09-18T12:59\">18/09/2025</time><span class=\"micro-sep\">·</span><span>CDC</span><span class=\"event-time\" title=\"Horário informado pela API, fuso não especificado\">12:59</span></div>\n<h4>Encerramento de Prazo</h4>\n<p>Encerramento do prazo de emendas, sem apresentação de emendas conforme página da Câmara.</p>\n<details class=\"event-evidence\"><summary>Rastreabilidade do evento</summary><p>Sequência na API: 17. ID de controle local: <code>b55c479d3c4f6775…</code> (não é um identificador oficial).</p><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes\" rel=\"noopener noreferrer\" target=\"_blank\">Movimentações na Câmara <span aria-hidden=\"true\">↗</span></a></details>\n</div>\n</li>\n</ol>\n<div class=\"review-note\"><strong>Atenção:</strong> os horários reproduzem a API sem fuso horário explícito. Os sete eventos são os encontrados nesse endpoint e recorte, não homologação da completude de todo o histórico legislativo.</div>\n</section>\n<section class=\"shadow-card section-card\" id=\"agentes\">\n<span class=\"kicker\">04 · Agentes envolvidos</span>\n<h3>Quem participa do processo?</h3>\n<div class=\"actor-list\"><div class=\"actor\"><div class=\"role\">Autoria</div><strong>Beto Richa</strong><p>Deputado federal. PSDB/PR no cadastro consultado; a filiação na data de autoria não foi aferida separadamente.</p></div><div class=\"actor\"><div class=\"role\">Relatoria na CDC</div><strong>Felipe Carreras</strong><p>Designado em 03/09/2025. O registro histórico da Câmara o identifica como PSB/PE.</p></div></div>\n<div class=\"review-note\"><strong>Critério editorial:</strong> informar partido, função e data a partir do registro próprio; não atribuir decisões aos parlamentares sem documento correspondente.</div>\n</section>\n<section class=\"shadow-card section-card\" id=\"conexoes\">\n<span class=\"kicker\">05 · Assuntos conectados</span>\n<h3>Há iniciativas sobre o mesmo tema?</h3>\n<p>A agenda regulatória 2026–2027 da Anvisa também aborda informação sobre ausência de glúten em alimentos. Esta é uma relação <strong>temática</strong>, não uma tramitação conjunta ou dependência jurídica demonstrada.</p>\n<div class=\"related\"><strong>Anvisa · Tema AR2627-3.2</strong><p>Regulamentação da rotulagem de ausência de glúten em alimentos.</p><a href=\"https://www.gov.br/anvisa/pt-br/assuntos/regulamentacao/agenda-regulatoria/agenda-2026-2027/lista-final-de-temas\" rel=\"noopener noreferrer\" target=\"_blank\">Ver agenda oficial ↗</a></div>\n<div class=\"related\"><strong>TAP nº 9/2026 · Anvisa</strong><p>Referência ao processo 25351.901604/2026-63 e à previsão de realização de consulta pública. Não indica que exista consulta aberta neste momento.</p><a href=\"https://anvisalegis.datalegis.net/action/ActionDatalegis.php?acao=abrirTextoAto&amp;cod_menu=9381&amp;cod_modulo=631&amp;link=S&amp;numeroAto=00000009&amp;orgao=ANVISA%2FMS&amp;seqAto=222&amp;tipo=TAP&amp;valorAno=2026\" rel=\"noopener noreferrer\" target=\"_blank\">Consultar termo oficial ↗</a></div>\n</section>\n<section class=\"shadow-card section-card\" id=\"pendencias\">\n<span class=\"kicker\">06 · Perguntas abertas</span>\n<h3>O que ainda precisamos verificar?</h3>\n<p>Estas questões orientam a análise antes de interpretar impactos da proposta.</p>\n<ul class=\"question-list\"><li>Quais critérios técnicos definiriam a “ausência” de glúten e lactose?</li><li>Como os selos propostos se relacionariam com normas sanitárias e a legislação já existente?</li><li>Como a proposta trataria contaminação cruzada, limites de detecção e clareza visual?</li><li>Que efeitos e custos poderia produzir para fabricantes e consumidores?</li><li>O texto integral traz disposições relevantes que não aparecem na ementa?</li></ul>\n<div class=\"review-note\"><strong>Não afirmar ainda:</strong> vigência, obrigação atual, impacto econômico, segurança garantida, efetividade dos selos ou abertura de consulta pública sem comprovação específica.</div>\n</section>\n<section class=\"shadow-card section-card\" id=\"transparencia\">\n<span class=\"kicker\">07 · Transparência</span>\n<h3>Fontes e critérios de verificação</h3>\n<p>As informações factuais deste protótipo foram organizadas a partir do dossiê laboratorial v0.2, elaborado com dados oficiais consultados em 27/10/2026. O inteiro teor não passou por reanálise jurídica nesta etapa.</p>\n<ul class=\"source-list\"><li class=\"source-row\"><span aria-hidden=\"true\" class=\"source-mark\">↗</span><div><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778\" rel=\"noopener noreferrer\" target=\"_blank\">Registro da proposição</a><p>Identidade, ementa e situação processual</p><small>Consultado 27/10/2026</small></div></li>\n<li class=\"source-row\"><span aria-hidden=\"true\" class=\"source-mark\">↗</span><div><a href=\"https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&amp;ord=1&amp;tp=completa\" rel=\"noopener noreferrer\" target=\"_blank\">Histórico completo na Câmara</a><p>Conferência pública das tramitações e relatoria</p><small>Consultado 27/10/2026</small></div></li>\n<li class=\"source-row\"><span aria-hidden=\"true\" class=\"source-mark\">↗</span><div><a href=\"https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/autores\" rel=\"noopener noreferrer\" target=\"_blank\">Autoria oficial</a><p>Autores registrados na API</p><small>Consultado 27/10/2026</small></div></li>\n<li class=\"source-row\"><span aria-hidden=\"true\" class=\"source-mark\">↗</span><div><a href=\"https://www.camara.leg.br/proposicoesWeb/prop_mostrarintegra?codteor=2889209\" rel=\"noopener noreferrer\" target=\"_blank\">Inteiro teor do PL</a><p>Link oficial, texto integral não reanalisado nesta rodada</p><small>Leitura integral pendente</small></div></li></ul>\n<p class=\"disclaimer\" style=\"margin-top:20px\">Este é um protótipo interno. A presença de uma proposta não expressa apoio ou oposição partidária, nem equivale a recomendação de mobilização. A avaliação de impactos e a revisão editorial final estão pendentes.</p>\n</section>\n</div>\n<aside aria-label=\"Painel de acompanhamento\" class=\"aside-stack\">\n<div class=\"shadow-card aside-card\"><h3>Situação do projeto</h3><div class=\"status-detail\"><span class=\"overline\">Na última consulta</span><strong>Aguardando parecer</strong><small>Comissão de Defesa do Consumidor (CDC)</small></div><p>Última movimentação observada: <strong>18/09/2025</strong>.<br/>Consulta aos dados: <strong>27/10/2026</strong>.</p><a class=\"action-link\" href=\"https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&amp;ord=1&amp;tp=completa\" rel=\"noopener noreferrer\" target=\"_blank\">Tramitação oficial <span aria-hidden=\"true\">↗</span></a></div>\n<div class=\"shadow-card aside-card\"><h3>Como ler este dossiê</h3><ul class=\"verification-list\"><li><span class=\"verify-symbol\">✓</span><span>Identidade, situação e autoria verificadas em fontes oficiais.</span></li><li><span class=\"verify-symbol\">✓</span><span>Sete eventos organizados com rastreabilidade.</span></li><li><span class=\"verify-symbol wait\">◷</span><span>Relevância e impacto: análise preliminar, ainda não aprovada.</span></li><li><span class=\"verify-symbol wait\">◷</span><span>Inteiro teor e compatibilidade normativa: revisão pendente.</span></li></ul></div>\n<div class=\"shadow-card aside-card\"><h3>Neste dossiê</h3><nav aria-label=\"Seções\" class=\"contents-links\"><a href=\"#proposta\">O que propõe</a><a href=\"#relevancia\">Por que importa</a><a href=\"#andamento\">Linha do tempo</a><a href=\"#agentes\">Agentes envolvidos</a><a href=\"#conexoes\">Assuntos conectados</a><a href=\"#pendencias\">Perguntas abertas</a><a href=\"#transparencia\">Fontes oficiais</a></nav></div>\n</aside>\n</div>\n",
+  "evidence_model": {
+    "dossier_id": "lab:camara:2498778",
+    "events": [
+      {
+        "event_id": "361d895144e92286af06473c432623da40d38d6c5b74c1f4850f423184e4cbcd",
+        "id_kind": "LOCAL_SHA256_FINGERPRINT_NOT_NATIVE_OFFICIAL_ID",
+        "occurred_at_official_without_timezone": "2025-04-22T15:50",
+        "sequence_in_official_api": 1,
+        "category": "Apresentação de Proposição",
+        "official_agency": "MESA",
+        "normalized_summary": "Apresentação do projeto de lei pelo deputado Beto Richa.",
+        "source_labels": {
+          "api_description": "Apresentação de Proposição",
+          "api_state_at_query": "Aguardando Parecer",
+          "state_warning": "campo de estado repetido por tramitação não interpretado como estado histórico do PL"
+        },
+        "evidence": {
+          "api_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+          "public_history_url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+          "cross_check": "EVENT_DATE_AND_MEANING_MATCH_OFFICIAL_PUBLIC_HISTORY",
+          "observation_run": "2026-10-27T12:48:59Z"
+        }
+      },
+      {
+        "event_id": "a9544c89e0a8efa2054ebe0d7206d00c3f63eef54e1e7732fb527607fb6ea1c6",
+        "id_kind": "LOCAL_SHA256_FINGERPRINT_NOT_NATIVE_OFFICIAL_ID",
+        "occurred_at_official_without_timezone": "2025-05-27T12:21",
+        "sequence_in_official_api": 7,
+        "category": "Distribuição",
+        "official_agency": "MESA",
+        "normalized_summary": "Distribuição às comissões de Defesa do Consumidor, Saúde e Constituição e Justiça e de Cidadania.",
+        "source_labels": {
+          "api_description": "Distribuição",
+          "api_state_at_query": "Aguardando Parecer",
+          "state_warning": "campo de estado repetido por tramitação não interpretado como estado histórico do PL"
+        },
+        "evidence": {
+          "api_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+          "public_history_url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+          "cross_check": "EVENT_DATE_AND_MEANING_MATCH_OFFICIAL_PUBLIC_HISTORY",
+          "observation_run": "2026-10-27T12:48:59Z"
+        }
+      },
+      {
+        "event_id": "7350b9a8172c15022c63a229a1b5b8d6044eb680aaab170f151b648e84cc3c54",
+        "id_kind": "LOCAL_SHA256_FINGERPRINT_NOT_NATIVE_OFFICIAL_ID",
+        "occurred_at_official_without_timezone": "2025-05-28T00:00",
+        "sequence_in_official_api": 13,
+        "category": "Publicação de Proposição",
+        "official_agency": "CCP",
+        "normalized_summary": "Encaminhamento à publicação inicial.",
+        "source_labels": {
+          "api_description": "Publicação de Proposição",
+          "api_state_at_query": "Aguardando Parecer",
+          "state_warning": "campo de estado repetido por tramitação não interpretado como estado histórico do PL"
+        },
+        "evidence": {
+          "api_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+          "public_history_url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+          "cross_check": "EVENT_DATE_AND_MEANING_MATCH_OFFICIAL_PUBLIC_HISTORY",
+          "observation_run": "2026-10-27T12:48:59Z"
+        }
+      },
+      {
+        "event_id": "1149e2973574a39572741a8660e895f84417592369199863778dc5ee531a266b",
+        "id_kind": "LOCAL_SHA256_FINGERPRINT_NOT_NATIVE_OFFICIAL_ID",
+        "occurred_at_official_without_timezone": "2025-05-28T20:56",
+        "sequence_in_official_api": 14,
+        "category": "Recebimento",
+        "official_agency": "CDC",
+        "normalized_summary": "Recebimento na Comissão de Defesa do Consumidor.",
+        "source_labels": {
+          "api_description": "Recebimento",
+          "api_state_at_query": "Aguardando Parecer",
+          "state_warning": "campo de estado repetido por tramitação não interpretado como estado histórico do PL"
+        },
+        "evidence": {
+          "api_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+          "public_history_url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+          "cross_check": "EVENT_DATE_AND_MEANING_MATCH_OFFICIAL_PUBLIC_HISTORY",
+          "observation_run": "2026-10-27T12:48:59Z"
+        }
+      },
+      {
+        "event_id": "6b9a4254c0ccb6701c5e02df208bb6056764b6f3095b242fffee3356e7677929",
+        "id_kind": "LOCAL_SHA256_FINGERPRINT_NOT_NATIVE_OFFICIAL_ID",
+        "occurred_at_official_without_timezone": "2025-09-03T15:40",
+        "sequence_in_official_api": 15,
+        "category": "Designação de Relator(a)",
+        "official_agency": "CDC",
+        "normalized_summary": "Designação do deputado Felipe Carreras (PSB-PE) como relator na CDC.",
+        "source_labels": {
+          "api_description": "Designação de Relator(a)",
+          "api_state_at_query": "Aguardando Parecer",
+          "state_warning": "campo de estado repetido por tramitação não interpretado como estado histórico do PL"
+        },
+        "evidence": {
+          "api_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+          "public_history_url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+          "cross_check": "EVENT_DATE_AND_MEANING_MATCH_OFFICIAL_PUBLIC_HISTORY",
+          "observation_run": "2026-10-27T12:48:59Z"
+        }
+      },
+      {
+        "event_id": "b29e30cf7c27c36a7ecff47610002579582b4453e1a9dbe46bfe25516919bdf3",
+        "id_kind": "LOCAL_SHA256_FINGERPRINT_NOT_NATIVE_OFFICIAL_ID",
+        "occurred_at_official_without_timezone": "2025-09-04T00:00",
+        "sequence_in_official_api": 16,
+        "category": "Abertura de Prazo",
+        "official_agency": "CDC",
+        "normalized_summary": "Abertura do prazo de emendas.",
+        "source_labels": {
+          "api_description": "Abertura de Prazo",
+          "api_state_at_query": "Aguardando Parecer",
+          "state_warning": "campo de estado repetido por tramitação não interpretado como estado histórico do PL"
+        },
+        "evidence": {
+          "api_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+          "public_history_url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+          "cross_check": "EVENT_DATE_AND_MEANING_MATCH_OFFICIAL_PUBLIC_HISTORY",
+          "observation_run": "2026-10-27T12:48:59Z"
+        }
+      },
+      {
+        "event_id": "b55c479d3c4f6775f04a13f7c1ddad4716228495850c01c317103811b4ac72e6",
+        "id_kind": "LOCAL_SHA256_FINGERPRINT_NOT_NATIVE_OFFICIAL_ID",
+        "occurred_at_official_without_timezone": "2025-09-18T12:59",
+        "sequence_in_official_api": 17,
+        "category": "Encerramento de Prazo",
+        "official_agency": "CDC",
+        "normalized_summary": "Encerramento do prazo de emendas, sem apresentação de emendas conforme página da Câmara.",
+        "source_labels": {
+          "api_description": "Encerramento de Prazo",
+          "api_state_at_query": "Aguardando Parecer",
+          "state_warning": "campo de estado repetido por tramitação não interpretado como estado histórico do PL"
+        },
+        "evidence": {
+          "api_url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+          "public_history_url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+          "cross_check": "EVENT_DATE_AND_MEANING_MATCH_OFFICIAL_PUBLIC_HISTORY",
+          "observation_run": "2026-10-27T12:48:59Z"
+        }
+      }
+    ],
+    "official_facts": {
+      "type": "Projeto de Lei",
+      "number": 1777,
+      "year": 2025,
+      "official_summary": "Dispõe sobre a obrigatoriedade da inclusão de selos informativos sobre a ausência de glúten e lactose na parte frontal das embalagens de alimentos industrializados.",
+      "presented_at_without_timezone": "2025-04-22T15:50",
+      "observed_stage": "Aguardando Parecer na CDC",
+      "stage_observed_on": "2026-10-27",
+      "last_recorded_movement_at": "2025-09-18T12:59",
+      "status_is_not_enactment": true,
+      "legislative_proposal_not_law_in_force": true
+    },
+    "source_references": [
+      {
+        "name": "API Câmara – proposição",
+        "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778",
+        "type": "institutional_json",
+        "checked": "2026-10-27"
+      },
+      {
+        "name": "API Câmara – tramitações",
+        "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes/2498778/tramitacoes",
+        "type": "institutional_json",
+        "checked": "2026-10-27"
+      },
+      {
+        "name": "Página oficial pública — histórico detalhado",
+        "url": "https://www.camara.leg.br/proposicoesWeb/prop_imp?idProposicao=2498778&ord=1&tp=completa",
+        "type": "institutional_html",
+        "checked": "2026-10-27"
+      },
+      {
+        "name": "Inteiro teor — link oficial (conteúdo íntegro não revalidado neste ensaio)",
+        "url": "https://www.camara.leg.br/proposicoesWeb/prop_mostrarintegra?codteor=2889209",
+        "type": "official_full_text_url",
+        "checked": null
+      }
+    ]
+  }
+}

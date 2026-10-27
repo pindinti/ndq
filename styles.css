@@ -56,3 +56,12 @@ body {
     width: min(78vw, 22rem);
   }
 }
+
+
+/* MVP v0.1: only additional navigation, leaving the original institutional home intact. */
+.ndq-destinations{display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem;margin-top:.2rem}
+.ndq-destination{display:inline-flex;align-items:center;gap:1.2rem;border:2px solid #151a10;border-radius:999px;padding:.8rem 1.4rem;color:#171710;text-decoration:none;font-size:clamp(.95rem,1.6vw,1.1rem);font-weight:720;background:rgba(255,255,255,.13);transition:background .18s,transform .18s}
+.ndq-destination:hover{background:#fff;transform:translateY(-2px)}
+.ndq-destination:focus-visible{outline:3px solid white;outline-offset:3px}
+.ndq-destination span{font-size:1.2em}
+@media(max-width:600px){.ndq-destinations{gap:.7rem}.ndq-destination{min-width:min(100%,275px);justify-content:space-between}}
