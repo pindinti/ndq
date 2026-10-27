@@ -48,7 +48,10 @@
       "locator": null,
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "Registro da proposição",
+      "display_description": "Identidade, ementa e situação processual",
+      "display_note": "Consultado 27/10/2026"
     },
     {
       "source_id": "camara-autores",
@@ -58,7 +61,10 @@
       "locator": null,
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "Autoria oficial",
+      "display_description": "Autores registrados na API",
+      "display_note": "Consultado 27/10/2026"
     },
     {
       "source_id": "camara-tramitacoes",
@@ -68,7 +74,10 @@
       "locator": null,
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "Movimentações da Câmara",
+      "display_description": "Eventos do processo registrados pela API oficial",
+      "display_note": "Consultado 27/10/2026"
     },
     {
       "source_id": "camara-historico",
@@ -78,7 +87,23 @@
       "locator": null,
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "Histórico completo na Câmara",
+      "display_description": "Conferência pública das tramitações e relatoria",
+      "display_note": "Consultado 27/10/2026"
+    },
+    {
+      "source_id": "camara-inteiro-teor",
+      "label": "Inteiro teor do PL",
+      "url": "https://www.camara.leg.br/proposicoesWeb/prop_mostrarintegra?codteor=2889209",
+      "source_type": "institutional_document_link",
+      "locator": "texto integral",
+      "observed_at": "2026-10-27",
+      "access_state": "not_checked",
+      "source_version": null,
+      "display_label": "Inteiro teor do PL",
+      "display_description": "Texto integral indicado na ficha oficial; não reanalisado nesta rodada",
+      "display_note": "Leitura integral pendente"
     }
   ],
   "facts": [
@@ -122,7 +147,8 @@
         "camara-historico"
       ],
       "official_sequence": 1,
-      "agency_code": "MESA"
+      "agency_code": "MESA",
+      "display_title": "Apresentação de Proposição"
     },
     {
       "event_id": "camara-tramitacao-local:a9544c89e0a8efa2054ebe0d7206d00c3f63eef54e1e7732fb527607fb6ea1c6",
@@ -138,7 +164,8 @@
         "camara-historico"
       ],
       "official_sequence": 7,
-      "agency_code": "MESA"
+      "agency_code": "MESA",
+      "display_title": "Distribuição"
     },
     {
       "event_id": "camara-tramitacao-local:7350b9a8172c15022c63a229a1b5b8d6044eb680aaab170f151b648e84cc3c54",
@@ -154,7 +181,8 @@
         "camara-historico"
       ],
       "official_sequence": 13,
-      "agency_code": "CCP"
+      "agency_code": "CCP",
+      "display_title": "Publicação de Proposição"
     },
     {
       "event_id": "camara-tramitacao-local:1149e2973574a39572741a8660e895f84417592369199863778dc5ee531a266b",
@@ -170,7 +198,8 @@
         "camara-historico"
       ],
       "official_sequence": 14,
-      "agency_code": "CDC"
+      "agency_code": "CDC",
+      "display_title": "Recebimento"
     },
     {
       "event_id": "camara-tramitacao-local:6b9a4254c0ccb6701c5e02df208bb6056764b6f3095b242fffee3356e7677929",
@@ -186,7 +215,8 @@
         "camara-historico"
       ],
       "official_sequence": 15,
-      "agency_code": "CDC"
+      "agency_code": "CDC",
+      "display_title": "Designação de Relator(a)"
     },
     {
       "event_id": "camara-tramitacao-local:b29e30cf7c27c36a7ecff47610002579582b4453e1a9dbe46bfe25516919bdf3",
@@ -202,7 +232,8 @@
         "camara-historico"
       ],
       "official_sequence": 16,
-      "agency_code": "CDC"
+      "agency_code": "CDC",
+      "display_title": "Abertura de Prazo"
     },
     {
       "event_id": "camara-tramitacao-local:b55c479d3c4f6775f04a13f7c1ddad4716228495850c01c317103811b4ac72e6",
@@ -218,7 +249,8 @@
         "camara-historico"
       ],
       "official_sequence": 17,
-      "agency_code": "CDC"
+      "agency_code": "CDC",
+      "display_title": "Encerramento de Prazo"
     }
   ],
   "official_status_observations": [
@@ -279,5 +311,6 @@
     "legislative_reference": "PL 1777/2025",
     "stage_not_enactment": true,
     "law_in_force": "NOT_VERIFIED_AND_NOT_CLAIMED"
-  }
+  },
+  "editorial_template_version": "ndq-editorial-template-v0.3"
 }

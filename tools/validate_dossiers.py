@@ -15,6 +15,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 RECORDS = ROOT / 'observatorio' / 'conteudo' / 'registros'
 LEGACY = ROOT / 'observatorio' / 'conteudo' / 'dossies'
+EDITORIAL = ROOT / 'observatorio' / 'conteudo' / 'editorial'
 SLUG = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 KINDS = {
     'legislative_proposal': ('legislacao', 'Projeto de lei'),
@@ -88,6 +89,9 @@ def validate_record(record: dict, legacy: dict, *, slug: str) -> list[str]:
     elif record.get('last_observed_at') != legacy.get('verified_at'):
         err('last_observed_at differs from approved legacy last observation (requires reviewed migration)')
 
+    if record.get('editorial_template_version') != 'ndq-editorial-template-v0.3':
+        err('missing/incorrect editorial_template_version')
+
     scope = record.get('scope')
     if not isinstance(scope, dict) or scope.get('sphere') not in ('federal', 'estadual'):
         err('missing/invalid jurisdiction sphere')
@@ -151,6 +155,77 @@ def validate_record(record: dict, legacy: dict, *, slug: str) -> list[str]:
             ids = [x.get(id_field) for x in vals]
             if any(not x for x in ids) or len(set(ids)) != len(ids):
                 err(f'missing or duplicated {field}.{id_field}')
+    # v0.3: explicit differentiation between process events and documentary
+    # context, including dates that were merely scheduled (not realized).
+    milestones = record.get('contextual_milestones', [])
+    if not isinstance(milestones, list):
+        err('contextual_milestones must be an array')
+        milestones = []
+    seen_milestone_ids = set()
+    allowed_contexts = {
+        'institutional_context_not_process_event',
+        'ndq_observation_not_agency_event',
+        'institutional_communication_not_procurement_award',
+        'scheduled_date_not_confirmed_occurrence',
+    }
+    for idx, item in enumerate(milestones):
+        mid = item.get('milestone_id')
+        if not mid or mid in seen_milestone_ids:
+            err(f'contextual_milestones[{idx}]: missing/duplicate milestone_id')
+        seen_milestone_ids.add(mid)
+        refs = item.get('source_ids')
+        if not isinstance(refs, list) or not refs or any(s not in source_ids for s in refs):
+            err(f'contextual_milestones[{idx}]: unknown or absent source reference')
+        if item.get('context_kind') not in allowed_contexts:
+            err(f'contextual_milestones[{idx}]: invalid context_kind')
+        if not item.get('title') or not item.get('description') or not item.get('display_date'):
+            err(f'contextual_milestones[{idx}]: empty editorial fields')
+        precision = item.get('date_precision')
+        period = item.get('period','')
+        if precision == 'month':
+            if not re.fullmatch(r'\d{4}-\d{2}', period or ''):
+                err(f'contextual_milestones[{idx}]: month requires YYYY-MM without invented day')
+            else:
+                try: datetime.strptime(period,'%Y-%m')
+                except ValueError: err(f'contextual_milestones[{idx}]: invalid month')
+        elif precision == 'day':
+            if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', period or '') or not parse_temporal(period):
+                err(f'contextual_milestones[{idx}]: invalid day period')
+        else:
+            err(f'contextual_milestones[{idx}]: unknown date_precision')
+        if not parse_temporal(item.get('observed_at')):
+            err(f'contextual_milestones[{idx}]: invalid observed_at')
+        if item.get('context_kind')=='scheduled_date_not_confirmed_occurrence':
+            if not parse_temporal(item.get('scheduled_for')) or 'occurred_at' in item:
+                err(f'contextual_milestones[{idx}]: planned date cannot be treated as occurred_at')
+        elif item.get('scheduled_for') is not None:
+            err(f'contextual_milestones[{idx}]: scheduled_for only valid for planned date')
+        if 'effective_at' in item or 'legal_effect' in item:
+            err(f'contextual_milestones[{idx}]: context cannot assert legal effect')
+    if kind == 'regulatory_agenda_theme':
+        if len(milestones)!=5 or record.get('events') != []:
+            err('Anvisa pilot must use five contextual milestones, not process events')
+        if any(i['context_kind'] not in ('institutional_context_not_process_event','ndq_observation_not_agency_event') for i in milestones):
+            err('Anvisa contextual milestones have invalid semantics')
+    if kind == 'public_procurement':
+        if len(milestones)!=2 or {m['context_kind'] for m in milestones} != {'institutional_communication_not_procurement_award','scheduled_date_not_confirmed_occurrence'}:
+            err('Fundepar contextual milestones must separate communication and scheduled date')
+        requirements = record.get('type_data',{}).get('item_requirements',[])
+        if not isinstance(requirements,list) or len(requirements)!=6:
+            err('Fundepar pilot: six documented item categories expected')
+        else:
+            for idx, item in enumerate(requirements):
+                if not item.get('name') or not item.get('details'):
+                    err(f'item_requirements[{idx}]: name and details required')
+                if not item.get('source_ids') or any(i not in source_ids for i in item['source_ids']):
+                    err(f'item_requirements[{idx}]: unknown source reference')
+        versions=record.get('type_data',{}).get('notice_versions',[])
+        for idx,version in enumerate(versions):
+            if not parse_temporal(version.get('document_date')) or not isinstance(version.get('maximum_value_brl_cents'), int):
+                err(f'notice_versions[{idx}]: invalid date or monetary cents')
+            if not version.get('source_ids') or any(i not in source_ids for i in version['source_ids']):
+                err(f'notice_versions[{idx}]: unknown source reference')
+
     if kind == 'legislative_proposal':
         for ev in record.get('events', []):
             if not ev.get('occurred_at') or not ev.get('event_type') or not ev.get('description'):
@@ -192,6 +267,9 @@ def validate_directory(records_dir: Path = RECORDS, legacy_dir: Path = LEGACY) -
     errors: list[str] = []
     files = sorted(records_dir.glob('*.json'))
     old_files = sorted(legacy_dir.glob('*.json'))
+    editorial_files = sorted(EDITORIAL.glob('*.json'))
+    if {x.stem for x in files} != {x.stem for x in editorial_files}:
+        errors.append('Editorial templates and normalized records must have matching slug sets')
     if not files:
         return [], ['No normalized records found']
     if {x.stem for x in files} != {x.stem for x in old_files}:
@@ -206,6 +284,17 @@ def validate_directory(records_dir: Path = RECORDS, legacy_dir: Path = LEGACY) -
             errors.append(f'{path.name}: file/JSON error: {exc}')
             continue
         errors.extend(validate_record(rec,legacy,slug=path.stem))
+        try:
+            template=json.loads((EDITORIAL/path.name).read_text('utf-8'))
+            if template.get('slug') != path.stem or template.get('schema') != 'ndq-editorial-template-v0.3':
+                errors.append(f'{path.name}: incorrect editorial template identity/version')
+            if template.get('status') != 'approved_private_pilot_narrative':
+                errors.append(f'{path.name}: editorial template approval state invalid')
+            for chunk in ('card_html','detail_html'):
+                if not isinstance(template.get(chunk),str) or '{{NDQ_' not in template[chunk]:
+                    errors.append(f'{path.name}: missing structured slots in {chunk}')
+        except (OSError, ValueError) as exc:
+            errors.append(f'{path.name}: editorial template error: {exc}')
         if rec.get('dossier_id') in seen_dossier_ids:
             errors.append(f'{path.name}: duplicate dossier_id across records')
         seen_dossier_ids.add(rec.get('dossier_id'))

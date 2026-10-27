@@ -59,7 +59,10 @@
       "locator": null,
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "PNCP · registro da contratação",
+      "display_description": "Identificação e acompanhamento da contratação pública; situação atual não homologada",
+      "display_note": "Consultar eventos posteriores diretamente na origem"
     },
     {
       "source_id": "fundepar-aviso-original",
@@ -69,7 +72,10 @@
       "locator": "20/05/2026",
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "Fundepar · aviso original da licitação",
+      "display_description": "Identificação do pregão, objeto, categorias anunciadas, valor inicial e data prevista da disputa",
+      "display_note": "Documento oficial, 20/05/2026"
     },
     {
       "source_id": "fundepar-aviso-retificado",
@@ -79,7 +85,10 @@
       "locator": "22/05/2026",
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "Fundepar · retificação oficial",
+      "display_description": "Correção documentada do valor máximo previsto no aviso",
+      "display_note": "Documento oficial, 22/05/2026"
     },
     {
       "source_id": "seeduc-pr-comunicado",
@@ -89,7 +98,23 @@
       "locator": "27/05/2026",
       "observed_at": "2026-10-27",
       "access_state": "documented_in_prior_review",
-      "source_version": null
+      "source_version": null,
+      "display_label": "Secretaria da Educação do Paraná",
+      "display_description": "Comunicação governamental sobre previsão de atendimento e itens anunciados",
+      "display_note": "Publicado em 27/05/2026"
+    },
+    {
+      "source_id": "fundepar-indice-licitacoes",
+      "label": "Índice de licitações Fundepar",
+      "url": "https://www.fundepar.pr.gov.br/Pagina/Aviso-de-Licitacoes",
+      "source_type": "institutional_html",
+      "locator": null,
+      "observed_at": "2026-10-27",
+      "access_state": "documented_in_prior_review",
+      "source_version": null,
+      "display_label": "Fundepar · índice de avisos de licitações",
+      "display_description": "Página institucional com avisos e retificações de procedimentos da Fundepar",
+      "display_note": "Consultar a versão mais recente diretamente na origem"
     }
   ],
   "facts": [
@@ -156,6 +181,30 @@
       "observed_at": "2026-10-27",
       "effective_at": null,
       "verification_status": "documented_prior_lab_or_editorial_review"
+    },
+    {
+      "fact_id": "fundepar-numero-lotes",
+      "predicate": "notice_announced_lot_count",
+      "value": 4,
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "source_locator": "aviso original (lotes)",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
+    },
+    {
+      "fact_id": "fundepar-modalidade",
+      "predicate": "procurement_modality",
+      "value": "Pregão eletrônico · registro de preços",
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "source_locator": "modalidade do pregão",
+      "observed_at": "2026-10-27",
+      "effective_at": null,
+      "verification_status": "documented_prior_lab_or_editorial_review"
     }
   ],
   "events": [
@@ -163,7 +212,7 @@
       "event_id": "fundepar:aviso:2026-05-20",
       "event_id_kind": "local_compound_from_official_date",
       "event_type": "notice_original",
-      "description": "Aviso original de licitação, com valor máximo previsto.",
+      "description": "O aviso registra pregão eletrônico para eventual aquisição de refeições e produtos congelados destinados à alimentação escolar, incluindo opções veganas, sem glúten e sem lactose.",
       "occurred_at": "2026-05-20",
       "occurrence_timezone_status": "date_only",
       "published_at": null,
@@ -172,13 +221,15 @@
         "fundepar-aviso-original"
       ],
       "official_sequence": null,
-      "agency_code": "Fundepar"
+      "agency_code": "Fundepar",
+      "display_title": "Aviso de licitação datado pela Fundepar",
+      "display_badge": "Aviso original"
     },
     {
       "event_id": "fundepar:retificacao:2026-05-22",
       "event_id_kind": "local_compound_from_official_date",
       "event_type": "notice_rectification",
-      "description": "Retificação do valor máximo previsto, sem inferência de mudança nos itens.",
+      "description": "A Fundepar publicou correção do valor máximo indicado no aviso, de R$ 8.858.390,00 para R$ 8.857.750,00.",
       "occurred_at": "2026-05-22",
       "occurrence_timezone_status": "date_only",
       "published_at": null,
@@ -187,7 +238,9 @@
         "fundepar-aviso-retificado"
       ],
       "official_sequence": null,
-      "agency_code": "Fundepar"
+      "agency_code": "Fundepar",
+      "display_title": "Retificação do valor máximo",
+      "display_badge": "Retificação"
     }
   ],
   "official_status_observations": [],
@@ -254,7 +307,49 @@
     ],
     "item_requirements": [
       {
+        "name": "Pão de queijo vegano",
+        "details": "Congelado; sem glúten e lactose.",
         "description": "Pão de queijo vegano congelado",
+        "source_ids": [
+          "fundepar-aviso-original"
+        ]
+      },
+      {
+        "name": "Refeições com proteína vegetal",
+        "details": "Congeladas, veganas; arroz/feijão ou massa, purê e risoto, com vegetais; sem glúten e lactose.",
+        "description": "Refeições com proteína vegetal",
+        "source_ids": [
+          "fundepar-aviso-original"
+        ]
+      },
+      {
+        "name": "Bolo simples vegano",
+        "details": "Congelado; sem glúten e lactose.",
+        "description": "Bolo simples vegano",
+        "source_ids": [
+          "fundepar-aviso-original"
+        ]
+      },
+      {
+        "name": "Sanduíche vegano",
+        "details": "Congelado; sem glúten e lactose.",
+        "description": "Sanduíche vegano",
+        "source_ids": [
+          "fundepar-aviso-original"
+        ]
+      },
+      {
+        "name": "Torta salgada vegana",
+        "details": "Congelada; sem glúten e lactose.",
+        "description": "Torta salgada vegana",
+        "source_ids": [
+          "fundepar-aviso-original"
+        ]
+      },
+      {
+        "name": "Opções com proteína animal",
+        "details": "Refeições, sanduíches e tortas, igualmente descritos como sem glúten e lactose, mas sem alegação de veganismo.",
+        "description": "Opções com proteína animal",
         "source_ids": [
           "fundepar-aviso-original"
         ]
@@ -263,5 +358,37 @@
     "procurement_lifecycle_events": [],
     "contract_signed": "NOT_VERIFIED",
     "goods_delivered": "NOT_VERIFIED"
-  }
+  },
+  "contextual_milestones": [
+    {
+      "milestone_id": "fundepar-comunicado-2026-05-27",
+      "period": "2026-05-27",
+      "date_precision": "day",
+      "display_date": "27/05/2026",
+      "display_badge": "Comunicação institucional",
+      "title": "Divulgação institucional sobre alimentação escolar especializada",
+      "description": "A Secretaria da Educação informou que o edital inclui alimentos destinados a necessidades alimentares específicas e mencionou atendimento previsto para mais de 1,9 mil estudantes. Trata-se de público informado na comunicação institucional, não de entregas comprovadas.",
+      "context_kind": "institutional_communication_not_procurement_award",
+      "source_ids": [
+        "seeduc-pr-comunicado"
+      ],
+      "observed_at": "2026-10-27"
+    },
+    {
+      "milestone_id": "fundepar-disputa-prevista-2026-06-11",
+      "period": "2026-06-11",
+      "date_precision": "day",
+      "display_date": "11/06/2026",
+      "display_badge": "Data prevista",
+      "title": "Data prevista para a disputa",
+      "description": "O aviso original marcou a disputa para 11 de junho de 2026, às 08h30. Esta linha registra a data programada, não confirma que a sessão ocorreu nem seu resultado.",
+      "context_kind": "scheduled_date_not_confirmed_occurrence",
+      "source_ids": [
+        "fundepar-aviso-original"
+      ],
+      "observed_at": "2026-10-27",
+      "scheduled_for": "2026-06-11T08:30"
+    }
+  ],
+  "editorial_template_version": "ndq-editorial-template-v0.3"
 }

@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Rebuild private NDQ MVP pages from normalized metadata and legacy approved HTML.
+"""Build NDQ v0.3 pages from validated records and approved editorial templates.
 
-The v0.2 normalized records drive index-card fields; v0.1 editorial fragments
-are preserved as approved visual content pending a later semantic migration.
-Never ingest external content into HTML fragments or publish automatically.
+Factual timelines, documentary references, metadata, actors and procurement
+changes are generated from structured records, never copied from legacy HTML.
+Remaining explanatory passages stay curated; no live data or public publishing.
 """
 from pathlib import Path
 import json, html
 from datetime import date
 from validate_dossiers import validate_directory
+from render_dossiers import TEMPLATES, render_record
 ROOT=Path(__file__).resolve().parents[1]
 OB=ROOT/'observatorio'
 DATA=OB/'conteudo'/'dossies'
@@ -24,7 +25,10 @@ def fixture(path, record):
     if d['group'] not in LABEL:raise ValueError(f'Unknown group: {path}')
     if d['id']!=path.stem or not all(c in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in d['id']):raise ValueError(f'Invalid slug: {path}')
     if not d['source'].startswith('https://'):raise ValueError(f'Official source not HTTPS: {path}')
-    # v0.2 is authoritative for metadata; rich editorial HTML still comes from v0.1.
+    # Approved editorial explanations remain curated; source-backed slots are
+    # rendered exclusively from the validated structured record.
+    template=json.loads((TEMPLATES/path.name).read_text(encoding="utf-8"))
+    d["card_html"],d["detail_html"]=render_record(record,template)
     d.update(record['presentation'])
     d['theme'] = record['theme']
     d['verified_at'] = record['last_observed_at']
@@ -33,6 +37,7 @@ def fixture(path, record):
 
 def detail_page(d):
     title=escape(d['title']); short=escape(d['type']); code=escape(d['eyebrow']); group=escape(LABEL[d['group']])
+    checked=escape(date.fromisoformat(d['verified_at']).strftime("%d/%m/%Y"))
     styles={'legislacao':'','regulacao':'<link rel="stylesheet" href="../../assets/anvisa.css">','compras':'<link rel="stylesheet" href="../../assets/fundepar.css">'}[d['group']]
     return f'''<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,7 +45,7 @@ def detail_page(d):
 <title>{title} · Observatório NDQ</title>
 <link rel="stylesheet" href="../../assets/dossie.css">{styles}<script defer src="../../assets/dossie.js"></script></head>
 <body id="inicio" class="show-notes">
-<div class="topbar"><div class="container"><strong>PRÉVIA PRIVADA · não publicado</strong><span>Dados observados em 27/10/2026 · requer nova conferência antes de publicação</span></div></div>
+<div class="topbar"><div class="container"><strong>PRÉVIA PRIVADA · não publicado</strong><span>Dados observados em {checked} · requer nova conferência antes de publicação</span></div></div>
 <header class="masthead"><div class="container mast-inner">
 <a class="brand" href="../../../" aria-label="Não de Queijo, página inicial"><span class="brand-icon" aria-hidden="true"><span>n.</span></span><span class="brand-lines"><strong>Observatório NDQ</strong><small>Informação para inclusão alimentar</small></span></a>
 <nav class="mastnav" aria-label="Navegação"><a href="../../../">Não de Queijo</a><a class="current" href="../../">Observatório</a><a href="#transparencia" data-switch="detail">Fontes</a></nav>
@@ -56,7 +61,7 @@ def detail_page(d):
 <div class="breadcrumbs" aria-label="Caminho"><a href="../../../">Não de Queijo</a><span class="slash">/</span><a href="../../">Observatório</a><span class="slash">/</span><span>{group}</span><span class="slash">/</span><strong>{code}</strong></div>
 <section id="view-card" role="tabpanel" aria-labelledby="tab-card">{d['card_html']}</section>
 <section id="view-detail" role="tabpanel" aria-labelledby="tab-detail" hidden class="hide">{d['detail_html']}</section>
-</main><footer><div class="container footer-content"><span><strong>Observatório NDQ</strong> · Informação verificável a serviço da inclusão alimentar.</span><span><a href="../../">Todos os dossiês</a> · Protótipo privado · 27/10/2026</span></div></footer>
+</main><footer><div class="container footer-content"><span><strong>Observatório NDQ</strong> · Informação verificável a serviço da inclusão alimentar.</span><span><a href="../../">Todos os dossiês</a> · Protótipo privado · {checked}</span></div></footer>
 </body></html>'''
 
 def card(d):
@@ -96,7 +101,7 @@ def home_page(dossiers):
 <section class="editorial-note" id="metodologia"><span class="eyebrow">Nossa abordagem</span><h2>Fidelidade à documentação. Confiança no leitor.</h2>
 <p>O Observatório NDQ é um serviço informativo da Não de Queijo dedicado a tornar mais acessíveis decisões públicas relacionadas à inclusão alimentar, incluindo necessidades médicas e escolhas éticas ou culturais. Apresentamos o que os documentos comprovam e identificamos aquilo que ainda não foi verificado.</p>
 <p><strong>Projeto de lei não é lei vigente; agenda regulatória não é norma aprovada; edital não é produto entregue.</strong> O conteúdo aqui é experimental, para revisão privada, sem atualizações automáticas ou chamadas à participação não verificadas.</p></section>
-</main><footer class="foot"><div class="container"><span><strong>Observatório NDQ</strong> · A inclusão não pode ter final.</span><span><a href="../">Home da marca</a> · Protótipo privado v0.1</span></div></footer>
+</main><footer class="foot"><div class="container"><span><strong>Observatório NDQ</strong> · A inclusão não pode ter final.</span><span><a href="../">Home da marca</a> · Protótipo privado v0.3</span></div></footer>
 </body></html>'''
 
 def main():
