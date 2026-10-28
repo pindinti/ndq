@@ -7,3 +7,4 @@ __pycache__/
 import-report*.json
 .env.ndq-validation
 .env.ndq-development
+.ndq-private/

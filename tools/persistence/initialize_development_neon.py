@@ -122,8 +122,8 @@ def run(*, apply: bool, confirm_branch_id: str | None = None) -> dict:
     # A fresh write-capable session must pass the same target checks before migrate().
     with _connection(config, read_only=False) as conn:
         _inspect_empty_target(conn)
-        applied = migrate(conn)
-        if applied != ['001_foundation.sql'] or migrate(conn):
+        applied = migrate(conn, through=1)
+        if applied != ['001_foundation.sql'] or migrate(conn, through=1):
             raise AssertionError('Migration 001 did not apply exactly once')
         first = import_pilots(conn, pilots)
         if len(first['imported']) != 3 or first['unchanged']:

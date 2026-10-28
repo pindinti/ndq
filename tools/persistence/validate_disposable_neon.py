@@ -53,7 +53,7 @@ def read_config(path: Path = CONFIG) -> dict:
 
     if not path.is_file():
         raise TargetError('Create the ignored .env.ndq-validation file first')
-    values = dotenv_values(path)
+    values = dotenv_values(path, interpolate=False)
     required = ('NDQ_DISPOSABLE_DATABASE_URL', 'NDQ_DISPOSABLE_BRANCH_ID',
                 'NDQ_DISPOSABLE_ENDPOINT_ID', 'NDQ_DEVELOPMENT_BRANCH_ID',
                 'NDQ_PRODUCTION_BRANCH_ID', 'NDQ_PRODUCTION_ENDPOINT_ID')
@@ -74,6 +74,8 @@ def read_config(path: Path = CONFIG) -> dict:
         raise TargetError('Invalid endpoint ID format')
     if endpoint_id == production_id:
         raise TargetError('Disposable endpoint matches the production endpoint')
+    if any(os.environ.get(key) for key in ('PGHOSTADDR', 'PGSERVICE', 'PGOPTIONS')):
+        raise TargetError('Libpq target or session override is present')
     try:
         parsed = urlsplit(url)
         params = parse_qs(parsed.query, keep_blank_values=True)
@@ -83,7 +85,7 @@ def read_config(path: Path = CONFIG) -> dict:
                 or parsed.hostname.lower().split('.')[0].endswith('-pooler')
                 or parsed.path != '/neondb' or parsed.port not in (None, 5432)
                 or mode not in (['require'], ['verify-ca'], ['verify-full'])
-                or any(key in params for key in ('host', 'hostaddr', 'service', 'options'))):
+                or any(key in params for key in ('host', 'hostaddr', 'service', 'options', 'dbname', 'port'))):
             raise TargetError('Disposable URL must name the selected direct Neon endpoint, neondb and explicit TLS')
     except ValueError:
         raise TargetError('Disposable URL is invalid or has unsupported connection options') from None
@@ -91,11 +93,23 @@ def read_config(path: Path = CONFIG) -> dict:
     dev_urls = [os.environ.get('DATABASE_URL', '')]
     dev_file = ROOT / '.env'
     if dev_file.is_file():
-        dev_urls.append(dotenv_values(dev_file).get('DATABASE_URL', ''))
+        dev_urls.append(dotenv_values(dev_file, interpolate=False).get('DATABASE_URL', ''))
     if any(_endpoint(_host(value)) == endpoint_id for value in dev_urls if value):
         raise TargetError('Disposable endpoint matches the persistent development endpoint')
+    guard_file = ROOT / '.env.ndq-development'
+    development_endpoint_verified = False
+    if guard_file.is_file():
+        guard = dotenv_values(guard_file, interpolate=False)
+        dev_endpoint = guard.get('NDQ_DEVELOPMENT_ENDPOINT_ID', '')
+        if (not re.fullmatch(r'ep-[a-z0-9-]+', dev_endpoint)
+                or dev_endpoint == endpoint_id
+                or guard.get('NDQ_DEVELOPMENT_BRANCH_ID') != development_branch_id
+                or guard.get('NDQ_PRODUCTION_BRANCH_ID') != production_branch_id
+                or guard.get('NDQ_PRODUCTION_ENDPOINT_ID') != production_id):
+            raise TargetError('Disposable target conflicts with protected branch or endpoint guards')
+        development_endpoint_verified = True
     return {'url': url, 'branch_id': branch_id, 'endpoint_id': endpoint_id,
-            'sslmode': mode[0]}
+            'sslmode': mode[0], 'development_endpoint_verified': development_endpoint_verified}
 
 
 def _connection(url: str, sslmode: str, *, read_only: bool):
@@ -204,8 +218,8 @@ def run(*, apply: bool, confirm_branch_id: str | None = None) -> dict:
                 'writes_performed': False}
     with _connection(config['url'], config['sslmode'], read_only=False) as conn:
         _inspect_target(conn, config, must_be_empty=True)
-        applied = migrate(conn)
-        if applied != ['001_foundation.sql'] or migrate(conn):
+        applied = migrate(conn, through=1)
+        if applied != ['001_foundation.sql'] or migrate(conn, through=1):
             raise AssertionError('Migration 001 did not apply exactly once')
         first = import_pilots(conn, pilots)
         if len(first['imported']) != 3 or first['unchanged']:

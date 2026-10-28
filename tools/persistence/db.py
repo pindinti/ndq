@@ -48,10 +48,14 @@ def connect(url: str | None = None):
                            application_name='observatorio-ndq', prepare_threshold=None)
 
 
-def migrate(conn, directory: Path = MIGRATIONS) -> list[str]:
+def migrate(conn, directory: Path = MIGRATIONS, *, through: int | None = None) -> list[str]:
     files = sorted(directory.glob('[0-9][0-9][0-9]_*.sql'))
     if not files or [int(p.name[:3]) for p in files] != list(range(1, len(files) + 1)):
         raise MigrationError('Migrations must be consecutive, starting at 001')
+    if through is not None:
+        if isinstance(through, bool) or not isinstance(through, int) or not 1 <= through <= len(files):
+            raise MigrationError('Invalid migration limit')
+        files = files[:through]
     applied_now = []
     with conn.transaction():
         conn.execute('SELECT pg_advisory_xact_lock(784331, 1)')

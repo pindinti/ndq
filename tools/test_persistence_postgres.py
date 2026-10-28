@@ -17,6 +17,7 @@ from uuid import uuid4
 from tools.persistence.contract import Pilot, digest, item_key, load_pilots
 from tools.persistence.db import MIGRATIONS, connect, migrate
 from tools.persistence.repository import IdentityConflict, import_pilots, read_record, schedule_check
+from tools.persistence.source_observations import SourceObservationError, write_local_test_observation
 
 TEST_URL = os.environ.get('NDQ_TEST_DATABASE_URL', '')
 
@@ -65,13 +66,166 @@ class PostgresPersistenceTest(unittest.TestCase):
             VALUES (%s, %s, %s, %s, %s, '{}'::jsonb)''', (revision, key, category, position, source))
 
     def test_migrations_idempotent_and_checksum_protected(self):
-        self.assertEqual(['001_foundation.sql'], self.first_migration)
+        self.assertEqual(['001_foundation.sql', '002_source_observations.sql'], self.first_migration)
         self.assertEqual([], migrate(self.conn))
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / '001_foundation.sql'
             path.write_bytes((MIGRATIONS / path.name).read_bytes() + b'\n-- tampered\n')
+            second = Path(tmp) / '002_source_observations.sql'
+            second.write_bytes((MIGRATIONS / second.name).read_bytes())
             with self.assertRaisesRegex(ValueError, 'modified'):
                 migrate(self.conn, Path(tmp))
+
+    def source(self, data=None, *, complete=True, pid=42):
+        from tools.collectors.http import BASE, FetchResult
+        from tools.collectors.camara.normalize import normalize
+        from tools.test_camara_collector import fixture_data
+        data = copy.deepcopy(data if data is not None else fixture_data())
+        suffixes = {'proposition': '', 'events': '/tramitacoes',
+                    'authors': '/autores', 'relationships': '/relacionadas'}
+        fetched = {name: FetchResult(f'{BASE}/proposicoes/{pid}{suffix}', data[name], complete,
+                                  [{'url': f'{BASE}/proposicoes/{pid}{suffix}',
+                                    'retrieved_at': '2026-10-27T14:00:00Z'}])
+                   for name, suffix in suffixes.items()}
+        return normalize(pid, fetched, '2026-10-27T14:00:00Z')
+
+    def write_source(self, source):
+        return write_local_test_observation(self.conn, source, allow_local_test=True)
+
+    def test_source_initial_identical_changed_and_returned(self):
+        from tools.test_camara_collector import fixture_data
+        first = self.source()
+        a = self.write_source(first)
+        repeated = self.write_source(first)
+        changed_data = fixture_data()
+        changed_data['events'][0]['despacho'] = 'Synthetic corrected literal despacho'
+        b = self.write_source(self.source(changed_data))
+        returned = self.write_source(first)
+        self.assertEqual(['initial', 'unchanged', 'changed', 'returned'],
+                         [x['transition'] for x in (a, repeated, b, returned)])
+        self.assertEqual([True, False, True, False],
+                         [x['snapshot_created'] for x in (a, repeated, b, returned)])
+        self.assertEqual((2, 4), self.conn.execute('''SELECT
+            (SELECT count(*) FROM ndq.source_snapshots),
+            (SELECT count(*) FROM ndq.source_collection_attempts)''').fetchone())
+        self.assertEqual(2, self.conn.execute('SELECT count(*) FROM ndq.source_change_candidates').fetchone()[0])
+        self.write_source(self.source(changed_data))
+        self.assertEqual(2, self.conn.execute('SELECT count(*) FROM ndq.source_change_candidates').fetchone()[0])
+        self.assertEqual((0, 0, 0, 0), self.conn.execute('''SELECT
+            (SELECT count(*) FROM ndq.dossier_revisions),
+            (SELECT count(*) FROM ndq.publication_states),
+            (SELECT count(*) FROM ndq.source_editorial_proposals),
+            (SELECT count(*) FROM ndq.source_editorial_decisions)''').fetchone())
+
+    def test_source_partial_failure_and_recovery_keep_valid_baseline(self):
+        from tools.collectors.http import BASE, FetchResult
+        from tools.collectors.camara.normalize import normalize
+        partial = self.write_source(self.source(complete=False))
+        self.assertEqual(('incomplete', 0), (partial['transition'],
+            self.conn.execute('SELECT count(*) FROM ndq.source_snapshots').fetchone()[0]))
+        complete = self.write_source(self.source())
+        self.assertEqual('initial', complete['transition'])
+        self.write_source(self.source(complete=False))
+        recovered = self.write_source(self.source())
+        self.assertEqual('unchanged', recovered['transition'])
+        fetched = {name: FetchResult(f'{BASE}/proposicoes/42{suffix}',
+                   None if name == 'proposition' else [], False)
+                   for name, suffix in (('proposition',''), ('events','/tramitacoes'),
+                                        ('authors','/autores'), ('relationships','/relacionadas'))}
+        failed = self.write_source(normalize(42, fetched, '2026-10-27T14:00:00Z'))
+        self.assertEqual('failed', failed['outcome'])
+        self.assertEqual(1, self.conn.execute('SELECT count(*) FROM ndq.source_snapshots').fetchone()[0])
+        self.assertEqual(0, self.conn.execute('SELECT count(*) FROM ndq.source_change_candidates').fetchone()[0])
+
+    def test_missing_event_match_key_is_preserved_only_as_attempt_evidence(self):
+        from tools.test_camara_collector import fixture_data
+        data = fixture_data()
+        del data['events'][0]['sequencia']
+        source = self.source(data)
+        self.assertFalse(source['coverage']['events']['complete'])
+        self.assertIsNone(source['events'][0]['match_key'])
+        result = self.write_source(source)
+        self.assertEqual('incomplete', result['outcome'])
+        self.assertEqual(0, self.conn.execute('SELECT count(*) FROM ndq.source_snapshots').fetchone()[0])
+        row = self.conn.execute('''SELECT match_key, selected_fields ->> 'despacho', evidence_url
+            FROM ndq.source_attempt_items WHERE endpoint_category = 'events' ''').fetchone()
+        self.assertIsNone(row[0])
+        self.assertEqual(data['events'][0]['despacho'], row[1])
+        self.assertTrue(row[2].endswith('/tramitacoes'))
+
+    def test_source_new_event_ambiguous_date_agency_and_identity_collision(self):
+        from tools.test_camara_collector import fixture_data
+        self.write_source(self.source())
+        data = fixture_data()
+        data['events'].append(dict(data['events'][0], sequencia=2))
+        result = self.write_source(self.source(data))
+        self.assertEqual('changed', result['transition'])
+        self.assertEqual('new', self.conn.execute('''SELECT classification FROM ndq.source_change_candidates
+            WHERE item_key LIKE 'camara-compound-v1:%' AND classification = 'new' LIMIT 1''').fetchone()[0])
+        data['events'][0]['dataHora'] = '2025-01-03T00:00'
+        data['events'][0]['siglaOrgao'] = 'OTHER'
+        result = self.write_source(self.source(data))
+        self.assertGreater(result['new_change_candidates'], 0)
+        self.assertGreater(self.conn.execute('''SELECT count(*) FROM ndq.source_change_candidates
+            WHERE classification = 'uncertain' AND reason = 'possible_event_date_or_agency_correction' ''').fetchone()[0], 0)
+        data['events'].append(dict(data['events'][0], despacho='Conflicting same compound key'))
+        self.write_source(self.source(data))
+        self.assertEqual(2, self.conn.execute('''SELECT count(*) FROM ndq.source_snapshot_items
+            WHERE snapshot_id = (SELECT snapshot_id FROM ndq.source_collection_attempts
+                ORDER BY attempt_sequence DESC LIMIT 1) AND endpoint_category = 'events'
+              AND match_key = (SELECT match_key FROM ndq.source_snapshot_items
+                WHERE snapshot_id = (SELECT snapshot_id FROM ndq.source_collection_attempts
+                    ORDER BY attempt_sequence DESC LIMIT 1)
+                  AND endpoint_category = 'events' AND selected_fields ->> 'siglaOrgao' = 'OTHER' LIMIT 1)''').fetchone()[0])
+
+    def test_source_append_only_fk_and_transaction_rollback(self):
+        initial = self.write_source(self.source())
+        self.assertTrue(initial['snapshot_created'])
+        self.sql_rejected('UPDATE ndq.source_snapshots SET content_hash = content_hash')
+        self.sql_rejected('DELETE FROM ndq.source_collection_attempts')
+        self.sql_rejected('UPDATE ndq.source_attempt_items SET ordinal = ordinal')
+        self.sql_rejected('TRUNCATE ndq.source_snapshot_items')
+        self.sql_rejected('''INSERT INTO ndq.source_snapshot_items
+            (snapshot_id, endpoint_category, ordinal, locator, selected_fields,
+             fingerprint, evidence_url, source_date_semantic)
+            VALUES (%s,'authors',0,'{}'::jsonb,'{}'::jsonb,%s,%s,'not_supplied')''',
+            (uuid4(), '0'*64, 'https://dadosabertos.camara.leg.br/api/v2/proposicoes/42/autores'))
+        before = self.conn.execute('SELECT count(*) FROM ndq.source_snapshots').fetchone()[0]
+        class FailingProxy:
+            def __init__(self, conn): self.real, self.info = conn, conn.info
+            def transaction(self): return self.real.transaction()
+            def execute(self, query, params=()):
+                if 'INSERT INTO ndq.source_snapshot_items' in query:
+                    raise RuntimeError('password=must-not-appear')
+                return self.real.execute(query, params)
+        from tools.test_camara_collector import fixture_data
+        changed = fixture_data()
+        changed['events'][0]['despacho'] = 'Rollback fixture'
+        with self.assertRaises(SourceObservationError) as caught:
+            write_local_test_observation(FailingProxy(self.conn), self.source(changed), allow_local_test=True)
+        self.assertNotIn('must-not-appear', str(caught.exception))
+        self.assertEqual(before, self.conn.execute('SELECT count(*) FROM ndq.source_snapshots').fetchone()[0])
+
+    def test_source_cross_identity_candidate_fk_is_rejected(self):
+        from tools.test_camara_collector import fixture_data
+        a = self.write_source(self.source())
+        other = fixture_data()
+        other['proposition']['id'] = 43
+        other['proposition']['uri'] = 'https://dadosabertos.camara.leg.br/api/v2/proposicoes/43'
+        self.write_source(self.source(other, pid=43))
+        ids = self.conn.execute('''SELECT official_id, snapshot_id FROM ndq.source_snapshots
+            ORDER BY official_id''').fetchall()
+        attempt_id = self.conn.execute('''SELECT attempt_id FROM ndq.source_collection_attempts
+            WHERE official_id = '42' LIMIT 1''').fetchone()[0]
+        self.assertEqual(['42', '43'], [x[0] for x in ids])
+        self.sql_rejected('''INSERT INTO ndq.source_change_candidates
+            (candidate_id,candidate_key,institution,namespace,official_id,projection_version,
+             first_attempt_id,before_snapshot_id,after_snapshot_id,section,classification,
+             reason,evidence_url)
+            VALUES (%s,%s,'camara','proposicoes','42','camara-selected-fields-v1',
+                    %s,%s,%s,'events','uncertain','cross_identity_test',%s)''',
+            (uuid4(), '1'*64, attempt_id, ids[0][1], ids[1][1],
+             'https://dadosabertos.camara.leg.br/api/v2/proposicoes/42/tramitacoes'))
 
     def test_import_roundtrip_and_exact_idempotency(self):
         first = self.seed()

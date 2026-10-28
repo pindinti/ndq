@@ -14,8 +14,10 @@ O Observatório tem finalidade informativa e editorial própria; a página insti
 | **MVP v0.2** | Registros estruturados com identidades, referências, fatos e eventos dos pilotos. |
 | **MVP v0.3** | Renderização de seções factuais dos dossiês a partir dos registros estruturados; parte da prosa contextual continua editorial. |
 | **MVP v0.4.1** | Fundação de persistência PostgreSQL, migração SQL versionada e importação idempotente dos três pilotos, validadas em uma branch descartável do Neon. A inicialização da branch persistente de desenvolvimento foi posteriormente reportada com `success=true`. |
+| **MVP v0.4.2 — fase 1** | Coletor experimental da Câmara com normalização, comparação somente leitura e proposta privada. Uma execução real do piloto foi comparada ao JSON e à baseline Neon de desenvolvimento. A ingestão dos resultados ainda não foi implementada. |
+| **MVP v0.4.2c — validação preparada** | Migração 002, writer de observações e executor de integração sintética com guard para branch Neon descartável. O CLI de coleta continua dry-run; o executor ainda não foi executado no Neon. |
 
-O próximo marco é a **v0.4.2**, um coletor experimental da **Câmara dos Deputados** com normalização dos dados. Ele ainda não está implementado.
+A próxima etapa é definir o contrato de ingestão das observações e suas evidências, mantendo revisão humana antes de alterações no conteúdo.
 
 ## Tecnologias
 
@@ -29,9 +31,9 @@ O próximo marco é a **v0.4.2**, um coletor experimental da **Câmara dos Deput
 
 | Camada | Estado atual |
 |---|---|
-| **Coleta de fontes oficiais** | Os pilotos contêm referências documentadas a fontes oficiais. Não existe coletor automático nem promessa de cobertura completa; o primeiro coletor, para a Câmara, está planejado para v0.4.2. |
+| **Coleta de fontes oficiais** | O CLI experimental da Câmara consulta quatro endpoints e prepara propostas locais. Ainda não existe agendamento, ingestão automática ou promessa de cobertura completa. |
 | **Registros e persistência** | `observatorio/conteudo/registros/*.json` é a entrada estruturada dos pilotos. O adaptador valida esses arquivos e os importa para o schema privado `ndq`, com migrações em SQL. O banco não alimenta automaticamente o site. |
-| **Histórico e relações** | Revisões, observações, identidades e evidências têm estruturas próprias e preservam proveniência. O schema prevê relações e verificações futuras; detecção automática de mudanças e relações documentadas ainda não está implementada. |
+| **Histórico e relações** | Revisões, observações, identidades e evidências têm estruturas próprias e preservam proveniência. A migração 002 propõe snapshots imutáveis, tentativas separadas e candidatos de mudança. O writer público segue restrito ao banco de teste local; um executor isolado foi preparado somente para ensaio sintético na branch Neon descartável. Ingestão operacional e relações tipadas aprovadas continuam pendentes. |
 | **Revisão editorial e publicação** | A importação marca os pilotos como `pending_review` e `private_preview_only`. Não há fluxo operacional de aprovação/publicação; avaliações anteriores não se tornam aprovação nova. |
 | **Geração do site** | `tools/build_site.py` gera HTML estático a partir dos registros e de `observatorio/conteudo/editorial/*.json`. O navegador público não usa credenciais nem conexão com PostgreSQL. |
 
@@ -54,6 +56,10 @@ tools/validate_dossiers.py           Validação dos registros
 tools/check_site.py                   Checagem local de páginas e links
 tools/persistence/                   Contrato, conexão, importador e verificadores
 tools/persistence/migrations/         Migrações SQL versionadas; início em 001_foundation.sql
+tools/persistence/source_observations.py Writer de fonte restrito a localhost/ndq_test
+tools/persistence/validate_source_disposable_neon.py  Executor sintético descartável, preflight por padrão
+tools/collectors/camara/              Observação da Câmara e comparação sem ingestão
+tools/collectors/http.py              Cliente JSON com retentativas e paginação restrita
 tools/test_*.py                       Testes offline e integração PostgreSQL opcional
 requirements-db.txt                  Dependências dos comandos de banco
 .env.example                         Modelo de configuração sem credenciais
@@ -96,7 +102,7 @@ Com as dependências instaladas e `DATABASE_URL` de um ambiente autorizado confi
 .\.venv\Scripts\python.exe -B -m tools.persistence.check_connection
 ```
 
-O CLI existente oferece validação local sem conexão, migração e importação dos pilotos. **`migrate` e `import-pilots` sem `--dry-run` escrevem no banco indicado por `DATABASE_URL`**; confira a branch e as permissões antes de executá-los. Uma variável de ambiente explícita tem prioridade sobre o `.env` da raiz nesses comandos.
+O CLI existente oferece validação local sem conexão, migração e importação dos pilotos. **`migrate` aplica todas as migrações pendentes, agora incluindo 002, e `import-pilots` sem `--dry-run` escreve no banco indicado por `DATABASE_URL`**; confira a branch e as permissões antes de executá-los. Uma variável de ambiente explícita tem prioridade sobre o `.env` da raiz nesses comandos. Os validadores históricos de inicialização permanecem limitados à migração 001.
 
 ```powershell
 .\.venv\Scripts\python.exe -B -m tools.persistence import-pilots --dry-run
@@ -105,6 +111,33 @@ O CLI existente oferece validação local sem conexão, migração e importaçã
 ```
 
 Para a inicialização controlada de uma branch persistente vazia, `tools.persistence.initialize_development_neon` oferece `--preflight` somente de leitura e `--apply` com confirmação do ID da branch. Os passos e as limitações estão em [IMPLEMENTACAO_MVP_v0.4.md](IMPLEMENTACAO_MVP_v0.4.md). Após a inicialização reportada, esse comando **não** serve para uma nova verificação da mesma branch: ele exige ausência do schema e da tabela de migrações.
+
+### Coletor experimental da Câmara
+
+Com o guard de desenvolvimento configurado, este comando consulta a API e compara o resultado com o registro local e o histórico PostgreSQL em sessão somente leitura:
+
+```powershell
+.\.venv\Scripts\python.exe -B -m tools.collectors.camara --proposition-id 2498778 --dry-run
+```
+
+Dry-run é o único modo. `--no-database` consulta a API sem carregar credenciais e compara apenas com os JSONs. Os relatórios são propostas `pending_review` em `.ndq-private/camara/`, ignoradas pelo Git; não atualizam banco, registro, editorial ou HTML. `--previous-proposal` compara **campos oficiais selecionados** com uma observação oficial anterior; o resumo curatorial e o despacho literal permanecem separados. O plano de ingestão no relatório é apenas uma simulação idempotente offline. A nota v0.4 documenta a política de retenção por endpoint, a cobertura limitada de comparação, a migração 002 ainda não aplicada e o preflight somente leitura de uma branch Neon descartável.
+
+### Executor sintético na branch Neon descartável
+
+O executor v0.4.2c usa exclusivamente a configuração ignorada `.env.ndq-validation`. Seu modo padrão é somente leitura:
+
+```powershell
+.\.venv\Scripts\python.exe -B -m tools.persistence.validate_source_disposable_neon
+```
+
+Após conferir **manualmente** o ID da branch descartável no console Neon e autorizar o ensaio, o modo explícito aplica somente a migração 002 e grava cenários sintéticos isolados dos três pilotos:
+
+```powershell
+$disposableBranchId = Read-Host 'ID br-... da branch descartável conferido no console Neon'
+.\.venv\Scripts\python.exe -B -m tools.persistence.validate_source_disposable_neon --apply --confirm-branch-id $disposableBranchId
+```
+
+Esse comando **não foi executado nesta etapa**. Exige endpoint direto, TLS ativo, banco `neondb`, migração 001 íntegra, 002 ausente, IDs de produção/desenvolvimento distintos e a confirmação exata da branch. Não usa a URL do `.env` da raiz como destino. Uma execução bem-sucedida deixa a migração 002 e linhas marcadas como sintéticas na branch descartável; após revisar o relatório, descarte **somente essa branch** pelo console Neon, conferindo novamente seu ID. Não execute a suíte PostgreSQL restrita a `localhost/ndq_test` no Neon. Detalhes de transações e limitações estão em [IMPLEMENTACAO_MVP_v0.4.md](IMPLEMENTACAO_MVP_v0.4.md).
 
 ## Ambientes de banco e segredos
 
@@ -124,14 +157,16 @@ No último checkpoint informado, **91 testes offline passaram** e **20 testes de
 
 Esses resultados foram informados nas etapas de validação da v0.4.1; não equivalem a testes de concorrência, de todas as restrições SQL, de futuras correções/revisões, de cobertura de fontes ou de coleta automática. Os três pilotos são recortes históricos, não constatações atualizadas em tempo real. O piloto da Câmara trata o PL 1777/2025 como proposta; o tema plant-based da Anvisa é uma observação da agenda; e o pregão da Fundepar registra edital e retificação, sem comprovar contratação ou entrega.
 
+Na fase 1 da v0.4.2, uma coleta real recuperou sete tramitações, um autor e uma lista vazia de relacionadas para o piloto da Câmara. A identidade e o hash da baseline Neon de desenvolvimento coincidiram com o JSON local. A revisão editorial posterior confirmou que diferenças entre resumos curatoriais e despachos literais **não são correções de fonte**; uma lista vazia no endpoint é observação válida, sem provar ausência global de relações. A URI oficial do autor é preservada sem fusão com ator legado ou atribuição de relatoria. `dataHora`, inclusive `00:00`, é preservado como valor procedimental da fonte, sem afirmar ocorrência naquele instante. Nenhuma proposta foi ingerida. Na preparação do executor v0.4.2c, **153 testes offline passaram e 27 testes PostgreSQL locais ficaram em skip** (180 casos); não houve teste SQL, migração remota ou nova coleta ao vivo. Os testes com o relatório privado local são ignorados quando ele não está disponível. Paginação com várias páginas, relações não vazias e correções de fonte foram exercitadas por testes sintéticos, sem comprovação ao vivo desses cenários.
+
 ## Próximos marcos
 
-1. **v0.4.2:** coletor experimental da Câmara dos Deputados e normalização de observações.
+1. **v0.4.2:** coletor e normalização implementados na fase 1; contrato de ingestão ainda pendente.
 2. **v0.4.3:** detecção de mudanças e relações documentadas, com proveniência e revisão.
 3. **v0.4.4:** descoberta semanal e verificações D+1 de datas oficialmente agendadas, com tratamento de resultados inconclusivos.
 4. **v0.4.5:** fluxo operacional de revisão editorial e publicação supervisionada.
 
-GitHub Actions é uma opção planejada para executar verificações agendadas; horários exatos de execução não devem ser tratados como garantia. Nenhuma dessas etapas está implementada ou publicada automaticamente.
+GitHub Actions é uma opção planejada para executar verificações agendadas; horários exatos de execução não devem ser tratados como garantia. Os marcos v0.4.3–v0.4.5 continuam planejados; não há publicação automática.
 
 ## Documentação
 
