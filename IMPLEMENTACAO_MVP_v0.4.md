@@ -905,9 +905,9 @@ $disposableBranchId = Read-Host 'ID br-... da branch descartável conferido no c
 Após o ensaio, conferir o relatório, o ID da branch e descartá-la **pelo console
 Neon**; não executar DROP no banco de desenvolvimento ou produção. A branch
 descartável fica com 002 e dados sintéticos append-only enquanto existir.
-O executor não apaga esses registros nem altera o site. A primeira aplicação real
-de 002, os INSERTs, as restrições e a concorrência no Neon continuam **sem teste**
-até essa execução autorizada. Um resultado de preflight não comprova sozinho o ID
+O executor não apaga esses registros nem altera o site. Naquele checkpoint, a primeira aplicação real
+de 002, os INSERTs, as restrições e a concorrência no Neon ainda estavam **sem teste**
+até a execução autorizada posteriormente registrada em v0.4.2d. Um resultado de preflight não comprova sozinho o ID
 da branch pela API Neon nem valida concorrência.
 
 Checkpoint offline do executor: **180 casos, 153 aprovados, zero falhas e 27
@@ -917,3 +917,88 @@ mudança de estado da migração, baseline dos pilotos, variantes sintéticas e
 saída sanitizada. `build_site.py` e `check_site.py` passaram; os quatro HTMLs
 gerados mantiveram os mesmos bytes. Nenhum desses testes prova execução SQL no
 Neon. O branch ID não é verificado por uma API do provedor.
+
+## v0.4.2d — validação descartável consolidada e migração de desenvolvimento preparada
+
+### Resultado informado da validação real de 002
+
+Após o checkpoint de implementação acima, o ensaio na branch Neon **descartável**
+foi concluído. O resultado foi informado pelo responsável pelo projeto; esta
+tarefa não refez uma conexão ao Neon nem gerou um novo relatório remoto.
+
+- `002_source_observations.sql` foi aplicada nessa branch; seu SHA-256 calculado
+  pelo mesmo método do ledger é
+  `f74e575b4a534f2d9c26df363dbe5e3e5089d32da6ebafa19aff44654ebfc8e8`.
+- As 11 transações de ingestão sintética passaram. A→A, A→B, A→B→A, recuperação
+  após resposta parcial, correção/ambiguidade de evento e deduplicação de
+  candidatos passaram. Uma falha injetada reverteu sua transação.
+- Foram reportadas **47 FKs, nenhuma não validada**, e **sete triggers**
+  `preserve_history` nas tabelas novas. Duas conexões simultâneas produziram
+  um snapshot, duas tentativas e zero candidatos de mudança.
+- Os três dossiês piloto, suas identidades, revisões, estados de revisão editorial
+  e publicação permaneceram iguais. Não foram criadas propostas ou decisões
+  editoriais. Nenhuma observação oficial foi ingerida.
+
+A branch descartável agora contém 002 e registros **sintéticos**; não pode ser
+promovida a branch persistente de desenvolvimento. Seu descarte deve ser feito
+somente pelo console Neon depois de conferir o ID da branch. Esses resultados
+não demonstram ingestão oficial, rotina agendada, publicação, cobertura completa
+dos endpoints nem aplicação de 002 na branch persistente de desenvolvimento.
+
+### Executor dedicado à branch persistente
+
+`tools/persistence/migrate_source_development_neon.py` prepara a aplicação
+**somente** de 002, sem chamar o CLI genérico de migração ou o writer de
+observações. Seu destino é lido exclusivamente do arquivo ignorado
+`.env.ndq-development`, com `NDQ_DEVELOPMENT_DATABASE_URL` e os IDs de branch e
+endpoint de desenvolvimento, produção e validação descartável. O arquivo antigo
+continha apenas os IDs; a URL direta de desenvolvimento deve ser adicionada
+localmente. O modelo sem segredos está em `.env.ndq-development.example`. A URL
+da raiz `.env` e a URL descartável não são usadas como destino desse executor.
+
+O modo padrão exige sessão e transação somente leitura, host efetivo do endpoint
+direto, banco `neondb`, TLS ativo, checksum de 001, ausência de 002 e de todas
+as sete tabelas novas, além do estado íntegro dos três pilotos. Para escrever,
+`--apply` requer `--confirm-branch-id` igual ao ID `br-...` informado no arquivo
+e conferido manualmente no console Neon. Os IDs de produção e descartável não
+podem coincidir com os de desenvolvimento. O PostgreSQL **não comprova o ID da
+branch** via API Neon; os IDs e a separação de ambientes são guardas de
+configuração, mais confirmação humana, não atestação independente do provedor.
+
+Uma nova sessão repete os guardas antes da escrita. A migração e a gravação de
+seu checksum no ledger usam o advisory lock existente dentro de uma transação
+externa, que também inclui a verificação imediata. Exige-se exatamente o ledger
+001+002, sete tabelas novas vazias, 47 FKs validadas (11 nas tabelas novas),
+chaves primárias, unicidades e CHECKs esperados por tabela e sete triggers
+append-only. O estado integral dos três pilotos deve permanecer igual. Uma
+última sessão somente leitura confirma o estado após o commit. Em erro no modo
+de escrita, a saída é sanitizada, sinaliza possível alteração parcial e **não
+repete automaticamente** a migração. Nenhuma linha de observação, revisão,
+aprovação ou publicação é inserida por esse comando.
+
+Comandos futuros, somente após conferir o arquivo ignorado e o ID real da branch
+de desenvolvimento no console Neon e autorizar a migração:
+
+```powershell
+.\.venv\Scripts\python.exe -B -m tools.persistence.migrate_source_development_neon
+$developmentBranchId = Read-Host 'ID br-... da branch de desenvolvimento conferido no console Neon'
+.\.venv\Scripts\python.exe -B -m tools.persistence.migrate_source_development_neon --apply --confirm-branch-id $developmentBranchId
+```
+
+**Compatibilidade de `synthetic_fixture`:** 002 exige a coluna booleana em
+snapshots e tentativas, mas a chave única do snapshot não inclui essa marca.
+O writer atual grava `true` e só é exposto no teste local ou no executor
+descartável. Uma futura entrada para fontes reais deve gravar `false`, proibir
+fixtures na branch persistente e definir como isolar conteúdo oficial de
+fixtures com mesma identidade/hash antes de usar essas tabelas. Caso se deseje
+permitir os dois tipos no mesmo banco, uma migração posterior deverá explicitar
+a separação de identidade, FKs e deduplicação. **Não** se altera o SQL 002 já
+validado, nem se habilita ingestão real nesta etapa.
+
+O executor de desenvolvimento foi implementado e testado **offline** nesta
+tarefa: 194 casos executados, 167 aprovados, 27 skips de integração local e
+nenhuma falha. `validate_dossiers.py`, `build_site.py` e `check_site.py` passaram;
+o build não alterou os HTMLs públicos. O executor não foi executado contra o
+Neon. A migração 002 permanece **não confirmada em desenvolvimento** até um
+preflight e uma aplicação explicitamente autorizada. Nenhuma capacidade de
+ingestão oficial foi validada aqui.

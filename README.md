@@ -15,9 +15,10 @@ O Observatório tem finalidade informativa e editorial própria; a página insti
 | **MVP v0.3** | Renderização de seções factuais dos dossiês a partir dos registros estruturados; parte da prosa contextual continua editorial. |
 | **MVP v0.4.1** | Fundação de persistência PostgreSQL, migração SQL versionada e importação idempotente dos três pilotos, validadas em uma branch descartável do Neon. A inicialização da branch persistente de desenvolvimento foi posteriormente reportada com `success=true`. |
 | **MVP v0.4.2 — fase 1** | Coletor experimental da Câmara com normalização, comparação somente leitura e proposta privada. Uma execução real do piloto foi comparada ao JSON e à baseline Neon de desenvolvimento. A ingestão dos resultados ainda não foi implementada. |
-| **MVP v0.4.2c — validação preparada** | Migração 002, writer de observações e executor de integração sintética com guard para branch Neon descartável. O CLI de coleta continua dry-run; o executor ainda não foi executado no Neon. |
+| **MVP v0.4.2c — validação descartável concluída** | Migração 002 e ingestão sintética foram validadas em uma branch Neon descartável. O CLI de coleta continua dry-run; nenhuma observação oficial foi ingerida. |
+| **MVP v0.4.2d — migração de desenvolvimento preparada** | Executor dedicado para aplicar somente 002 à branch persistente de desenvolvimento, sem ingestão; modo padrão somente leitura. A migração ainda não foi aplicada nessa branch. |
 
-A próxima etapa é definir o contrato de ingestão das observações e suas evidências, mantendo revisão humana antes de alterações no conteúdo.
+A próxima etapa operacional é conferir e, com autorização específica, aplicar 002 à branch persistente de desenvolvimento. O contrato de ingestão de observações oficiais ainda precisa de revisão antes de habilitar escrita de fontes reais.
 
 ## Tecnologias
 
@@ -33,7 +34,7 @@ A próxima etapa é definir o contrato de ingestão das observações e suas evi
 |---|---|
 | **Coleta de fontes oficiais** | O CLI experimental da Câmara consulta quatro endpoints e prepara propostas locais. Ainda não existe agendamento, ingestão automática ou promessa de cobertura completa. |
 | **Registros e persistência** | `observatorio/conteudo/registros/*.json` é a entrada estruturada dos pilotos. O adaptador valida esses arquivos e os importa para o schema privado `ndq`, com migrações em SQL. O banco não alimenta automaticamente o site. |
-| **Histórico e relações** | Revisões, observações, identidades e evidências têm estruturas próprias e preservam proveniência. A migração 002 propõe snapshots imutáveis, tentativas separadas e candidatos de mudança. O writer público segue restrito ao banco de teste local; um executor isolado foi preparado somente para ensaio sintético na branch Neon descartável. Ingestão operacional e relações tipadas aprovadas continuam pendentes. |
+| **Histórico e relações** | Revisões, observações, identidades e evidências têm estruturas próprias e preservam proveniência. A migração 002 define snapshots imutáveis, tentativas separadas e candidatos de mudança; foi validada com dados sintéticos na branch Neon descartável. O writer público segue restrito ao banco de teste local. Ingestão operacional e relações tipadas aprovadas continuam pendentes. |
 | **Revisão editorial e publicação** | A importação marca os pilotos como `pending_review` e `private_preview_only`. Não há fluxo operacional de aprovação/publicação; avaliações anteriores não se tornam aprovação nova. |
 | **Geração do site** | `tools/build_site.py` gera HTML estático a partir dos registros e de `observatorio/conteudo/editorial/*.json`. O navegador público não usa credenciais nem conexão com PostgreSQL. |
 
@@ -58,11 +59,13 @@ tools/persistence/                   Contrato, conexão, importador e verificado
 tools/persistence/migrations/         Migrações SQL versionadas; início em 001_foundation.sql
 tools/persistence/source_observations.py Writer de fonte restrito a localhost/ndq_test
 tools/persistence/validate_source_disposable_neon.py  Executor sintético descartável, preflight por padrão
+tools/persistence/migrate_source_development_neon.py  Migração 002 em desenvolvimento, preflight por padrão
 tools/collectors/camara/              Observação da Câmara e comparação sem ingestão
 tools/collectors/http.py              Cliente JSON com retentativas e paginação restrita
 tools/test_*.py                       Testes offline e integração PostgreSQL opcional
 requirements-db.txt                  Dependências dos comandos de banco
 .env.example                         Modelo de configuração sem credenciais
+.env.ndq-development.example         Modelo do guard dedicado de desenvolvimento
 ```
 
 As rotas são `/` (marca), `/nao-de-queijo/` (seção em construção), `/observatorio/` (portal) e `/observatorio/dossies/<slug>/` (dossiês). A seção da marca não anuncia retomada de produção comercial. Os fixtures em `observatorio/conteudo/dossies/` preservam regressões editoriais; não são a fonte atual das cronologias geradas.
@@ -120,7 +123,7 @@ Com o guard de desenvolvimento configurado, este comando consulta a API e compar
 .\.venv\Scripts\python.exe -B -m tools.collectors.camara --proposition-id 2498778 --dry-run
 ```
 
-Dry-run é o único modo. `--no-database` consulta a API sem carregar credenciais e compara apenas com os JSONs. Os relatórios são propostas `pending_review` em `.ndq-private/camara/`, ignoradas pelo Git; não atualizam banco, registro, editorial ou HTML. `--previous-proposal` compara **campos oficiais selecionados** com uma observação oficial anterior; o resumo curatorial e o despacho literal permanecem separados. O plano de ingestão no relatório é apenas uma simulação idempotente offline. A nota v0.4 documenta a política de retenção por endpoint, a cobertura limitada de comparação, a migração 002 ainda não aplicada e o preflight somente leitura de uma branch Neon descartável.
+Dry-run é o único modo. `--no-database` consulta a API sem carregar credenciais e compara apenas com os JSONs. Os relatórios são propostas `pending_review` em `.ndq-private/camara/`, ignoradas pelo Git; não atualizam banco, registro, editorial ou HTML. `--previous-proposal` compara **campos oficiais selecionados** com uma observação oficial anterior; o resumo curatorial e o despacho literal permanecem separados. O plano de ingestão no relatório é apenas uma simulação idempotente offline. A nota v0.4 documenta a política de retenção por endpoint, a cobertura limitada de comparação e a validação de 002 na branch descartável; 002 ainda está pendente na branch persistente de desenvolvimento.
 
 ### Executor sintético na branch Neon descartável
 
@@ -137,7 +140,24 @@ $disposableBranchId = Read-Host 'ID br-... da branch descartável conferido no c
 .\.venv\Scripts\python.exe -B -m tools.persistence.validate_source_disposable_neon --apply --confirm-branch-id $disposableBranchId
 ```
 
-Esse comando **não foi executado nesta etapa**. Exige endpoint direto, TLS ativo, banco `neondb`, migração 001 íntegra, 002 ausente, IDs de produção/desenvolvimento distintos e a confirmação exata da branch. Não usa a URL do `.env` da raiz como destino. Uma execução bem-sucedida deixa a migração 002 e linhas marcadas como sintéticas na branch descartável; após revisar o relatório, descarte **somente essa branch** pelo console Neon, conferindo novamente seu ID. Não execute a suíte PostgreSQL restrita a `localhost/ndq_test` no Neon. Detalhes de transações e limitações estão em [IMPLEMENTACAO_MVP_v0.4.md](IMPLEMENTACAO_MVP_v0.4.md).
+Esse comando foi executado em uma branch Neon descartável: 002 foi aplicada, 11 transações sintéticas e os cenários de repetição, retorno, recuperação parcial, correção/ambiguidade, rollback e concorrência passaram. Foram reportadas 47 FKs validadas e sete triggers append-only; os três pilotos e seus estados editoriais/publicação permaneceram iguais. A branch contém dados sintéticos e deve ser descartada pelo console Neon após conferência do ID. Não execute a suíte PostgreSQL restrita a `localhost/ndq_test` no Neon. Detalhes e limites estão em [IMPLEMENTACAO_MVP_v0.4.md](IMPLEMENTACAO_MVP_v0.4.md).
+
+### Migração 002 na branch persistente de desenvolvimento
+
+O novo executor usa **somente** a URL `NDQ_DEVELOPMENT_DATABASE_URL` do arquivo ignorado `.env.ndq-development`; não seleciona o `.env` da raiz nem `.env.ndq-validation` como destino. Use [.env.ndq-development.example](.env.ndq-development.example) como referência e confira os IDs no console Neon, sem divulgar os valores. O arquivo local atual contém apenas os IDs: adicione nele a URL direta de desenvolvimento antes de executar o preflight. O modo padrão não escreve:
+
+```powershell
+.\.venv\Scripts\python.exe -B -m tools.persistence.migrate_source_development_neon
+```
+
+Somente após conferir manualmente o ID real da branch de desenvolvimento no console Neon e autorizar a migração, o modo explícito aplica **apenas 002**, sem inserir observações:
+
+```powershell
+$developmentBranchId = Read-Host 'ID br-... da branch de desenvolvimento conferido no console Neon'
+.\.venv\Scripts\python.exe -B -m tools.persistence.migrate_source_development_neon --apply --confirm-branch-id $developmentBranchId
+```
+
+O preflight exige 001 com checksum correto, 002 ausente, sete tabelas de fonte ausentes, TLS ativo, endpoint direto e três pilotos íntegros. O resultado pós-migração confere ledger, tabelas vazias, constraints, triggers e os pilotos. **Esse executor não foi conectado ao Neon nem aplicou 002 em desenvolvimento nesta etapa.** O ID da branch não é comprovado pela conexão PostgreSQL; a confirmação humana no console é indispensável.
 
 ## Ambientes de banco e segredos
 
@@ -149,7 +169,7 @@ Esse comando **não foi executado nesta etapa**. Exige endpoint direto, TLS ativ
 
 Essas são **branches de banco do Neon**: cada uma representa um estado de dados e schema. Uma **branch Git** versiona arquivos de código e conteúdo; trocar de branch Git não seleciona automaticamente uma branch de banco.
 
-O `.env` da raiz guarda a `DATABASE_URL` local; `.env.ndq-validation` é usado pelo validador da branch descartável, e `.env.ndq-development` guarda apenas identificadores de proteção para o inicializador de desenvolvimento. Esses arquivos são ignorados pelo Git; [.env.example](.env.example) contém o modelo sem segredos. Nunca coloque URLs de conexão, senhas ou tokens em commits, relatórios, HTML gerado ou JavaScript do navegador.
+O `.env` da raiz guarda a `DATABASE_URL` dos comandos antigos; `.env.ndq-validation` é usado pelo validador descartável. O executor dedicado de 002 exige a URL de desenvolvimento **no próprio** `.env.ndq-development`, junto dos IDs de proteção. Esses arquivos preenchidos são ignorados pelo Git; [.env.example](.env.example) e [.env.ndq-development.example](.env.ndq-development.example) contêm modelos sem segredos. Nunca coloque URLs de conexão, senhas ou tokens em commits, relatórios, HTML gerado ou JavaScript do navegador.
 
 ## Validação conhecida e limites
 
@@ -157,7 +177,9 @@ No último checkpoint informado, **91 testes offline passaram** e **20 testes de
 
 Esses resultados foram informados nas etapas de validação da v0.4.1; não equivalem a testes de concorrência, de todas as restrições SQL, de futuras correções/revisões, de cobertura de fontes ou de coleta automática. Os três pilotos são recortes históricos, não constatações atualizadas em tempo real. O piloto da Câmara trata o PL 1777/2025 como proposta; o tema plant-based da Anvisa é uma observação da agenda; e o pregão da Fundepar registra edital e retificação, sem comprovar contratação ou entrega.
 
-Na fase 1 da v0.4.2, uma coleta real recuperou sete tramitações, um autor e uma lista vazia de relacionadas para o piloto da Câmara. A identidade e o hash da baseline Neon de desenvolvimento coincidiram com o JSON local. A revisão editorial posterior confirmou que diferenças entre resumos curatoriais e despachos literais **não são correções de fonte**; uma lista vazia no endpoint é observação válida, sem provar ausência global de relações. A URI oficial do autor é preservada sem fusão com ator legado ou atribuição de relatoria. `dataHora`, inclusive `00:00`, é preservado como valor procedimental da fonte, sem afirmar ocorrência naquele instante. Nenhuma proposta foi ingerida. Na preparação do executor v0.4.2c, **153 testes offline passaram e 27 testes PostgreSQL locais ficaram em skip** (180 casos); não houve teste SQL, migração remota ou nova coleta ao vivo. Os testes com o relatório privado local são ignorados quando ele não está disponível. Paginação com várias páginas, relações não vazias e correções de fonte foram exercitadas por testes sintéticos, sem comprovação ao vivo desses cenários.
+Na fase 1 da v0.4.2, uma coleta real recuperou sete tramitações, um autor e uma lista vazia de relacionadas para o piloto da Câmara. A identidade e o hash da baseline Neon de desenvolvimento coincidiram com o JSON local. A revisão editorial posterior confirmou que diferenças entre resumos curatoriais e despachos literais **não são correções de fonte**; uma lista vazia no endpoint é observação válida, sem provar ausência global de relações. A URI oficial do autor é preservada sem fusão com ator legado ou atribuição de relatoria. `dataHora`, inclusive `00:00`, é preservado como valor procedimental da fonte, sem afirmar ocorrência naquele instante. Nenhuma proposta foi ingerida. Em v0.4.2c, o executor sintético passou no Neon descartável conforme os resultados acima; isso não valida ingestão oficial nem aplicação de 002 em desenvolvimento. Paginação com várias páginas, relações não vazias e correções de fonte foram exercitadas por testes sintéticos, sem comprovação ao vivo desses cenários.
+
+Na preparação v0.4.2d, a suíte offline executou **194 testes: 167 aprovados, 27 skips de integração local e nenhuma falha**. O build e a integridade do site passaram sem alterar os HTMLs públicos. O executor de desenvolvimento não foi executado contra o Neon.
 
 ## Próximos marcos
 
